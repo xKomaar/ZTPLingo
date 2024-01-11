@@ -24,7 +24,7 @@ public class Sentence implements Phrase {
     private User user;
 
     @Transient
-    private ArrayList<String> scrambled;
+    private ArrayList<String> shuffled;
 
     public Sentence(String polish, String english) {
         this.polish = polish;
@@ -46,35 +46,22 @@ public class Sentence implements Phrase {
     }
 
     @Override
-    public ArrayList<String> getScrambled() {
-        return scrambled;
+    public ArrayList<String> getShuffled() {
+        return shuffled;
     }
 
     @Override
-    public void scramble(LanguageState language) {
-        if(scrambled == null) {
-            scrambled = new ArrayList<>();
-        } else {
-            scrambled.clear();
-        }
-        if(language == LanguageState.ENGLISH_TO_POLISH) {
-            scrambled = divideIntoWords(english);
-        } else {
-            scrambled = divideIntoWords(polish);
-        }
+    public void setShuffled(ArrayList<String> shuffled) {
+        this.shuffled = shuffled;
     }
 
-    private ArrayList<String> divideIntoWords(String sentence) {
-        int j=0, i;
-        ArrayList<String> result = new ArrayList<>();
-        for(i=0; i<sentence.length(); i++) {
-            if(sentence.charAt(i) == ' ') {
-                result.add(sentence.substring(j,i+1));
-                j=i+1;
-            }
+    @Override
+    public void shuffle() {
+        if(shuffled == null) {
+            shuffled = new ArrayList<>();
+        } else {
+            shuffled.clear();
         }
-        result.add(sentence.substring(j));
-        return result;
     }
 
     public Integer getId() {
