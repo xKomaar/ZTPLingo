@@ -1,4 +1,7 @@
 package pl.ztplingo.decorator;
 
-public interface PhraseDecorator {
+import pl.ztplingo.model.Phrase;
+
+public interface PhraseDecorator extends Phrase {
+
 }
