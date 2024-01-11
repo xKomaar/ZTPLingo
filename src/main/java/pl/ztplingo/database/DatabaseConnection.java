@@ -7,11 +7,15 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 import pl.ztplingo.model.Sentence;
 import pl.ztplingo.model.User;
 import pl.ztplingo.model.Word;
 
-public class DatabaseConnection {
+import java.util.ArrayList;
+import java.util.List;
+
+class DatabaseConnection implements Database {
 
     private static DatabaseConnection instance;
 
@@ -25,7 +29,7 @@ public class DatabaseConnection {
         sessionFactory = metadata.getSessionFactoryBuilder().build();
     }
 
-    protected static DatabaseConnection getInstance() {
+    public static DatabaseConnection getInstance() {
         if(instance == null) {
             instance = new DatabaseConnection();
         }
@@ -46,19 +50,19 @@ public class DatabaseConnection {
         }
     }
 
-    protected void saveUser(User user) {
+    public void saveUser(User user) {
         saveEntity(user);
     }
 
-    protected void saveWord(Word word) {
+    public void saveWord(Word word) {
         saveEntity(word);
     }
 
-    protected void saveSentence(Sentence sentence) {
+    public void saveSentence(Sentence sentence) {
         saveEntity(sentence);
     }
 
-    protected User getUser(Integer id)
+    public User getUserById(Integer id)
     {
         Session session = null;
         User user = null;
@@ -74,7 +78,7 @@ public class DatabaseConnection {
         return user;
     }
 
-    protected Word getWord(Integer id)
+    public Word getWordById(Integer id)
     {
         Session session = null;
         Word word = null;
@@ -90,7 +94,7 @@ public class DatabaseConnection {
         return word;
     }
 
-    protected Sentence getSentence(Integer id)
+    public Sentence getSentenceById(Integer id)
     {
         Session session = null;
         Sentence sentence = null;
@@ -104,6 +108,42 @@ public class DatabaseConnection {
         }
 
         return sentence;
+    }
+
+    public List<Word> getWordsByUser(User user) {
+        Session session = null;
+        List<Word> words = new ArrayList<>();
+
+        try {
+            session = sessionFactory.openSession();
+
+            Query query = session.createQuery("FROM Word W WHERE W.user = :user");
+            query.setParameter("user", user);
+            words = query.list();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null) session.close();
+        }
+
+        return words;
+    }
+    
+    public List<Sentence> getSentencesByUser(User user) {
+        Session session = null;
+        List<Sentence> sentences = new ArrayList<>();
+        try {
+            session = sessionFactory.openSession();
+
+            Query query = session.createQuery("FROM Sentence S WHERE S.user = :user");
+            query.setParameter("user", user);
+            sentences = query.list();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null) session.close();
+        }
+        return sentences;
     }
 
     private void updateEntity(Object o) {
@@ -125,22 +165,22 @@ public class DatabaseConnection {
         }
     }
 
-    protected void updateUser(User user)
+    public void updateUser(User user)
     {
         updateEntity(user);
     }
 
-    protected void updateWord(Word word)
+    public void updateWord(Word word)
     {
         updateEntity(word);
     }
 
-    protected void updateSentence(Sentence sentence)
+    public void updateSentence(Sentence sentence)
     {
         updateEntity(sentence);
     }
 
-    protected void deleteUser(Integer id)
+    public void deleteUser(User u)
     {
         Session session = null;
         Transaction transaction = null;
@@ -149,7 +189,7 @@ public class DatabaseConnection {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            User user = session.get(User.class, id);
+            User user = session.get(User.class, u.getId());
 
             session.remove(user);
 
@@ -162,7 +202,7 @@ public class DatabaseConnection {
         }
     }
 
-    protected void deleteWord(Integer id)
+    public void deleteWord(Word w)
     {
         Session session = null;
         Transaction transaction = null;
@@ -171,7 +211,7 @@ public class DatabaseConnection {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            Word word = session.get(Word.class, id);
+            Word word = session.get(Word.class, w.getId());
 
             session.remove(word);
 
@@ -184,7 +224,7 @@ public class DatabaseConnection {
         }
     }
 
-    protected void deleteSentence(Integer id)
+    public void deleteSentence(Sentence s)
     {
         Session session = null;
         Transaction transaction = null;
@@ -193,7 +233,7 @@ public class DatabaseConnection {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
-            Sentence sentence = session.get(Sentence.class, id);
+            Sentence sentence = session.get(Sentence.class, s.getId());
 
             session.remove(sentence);
 
