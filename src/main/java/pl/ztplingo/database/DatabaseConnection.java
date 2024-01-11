@@ -1,4 +1,4 @@
-package pl.ztplingo.databaseSingleton;
+package pl.ztplingo.database;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,12 +7,9 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.Query;
 import pl.ztplingo.model.Sentence;
 import pl.ztplingo.model.User;
 import pl.ztplingo.model.Word;
-
-import java.util.List;
 
 public class DatabaseConnection {
 
@@ -28,19 +25,19 @@ public class DatabaseConnection {
         sessionFactory = metadata.getSessionFactoryBuilder().build();
     }
 
-    public static DatabaseConnection getInstance() {
+    protected static DatabaseConnection getInstance() {
         if(instance == null) {
             instance = new DatabaseConnection();
         }
         return instance;
     }
 
-    public void saveUser(User user) {
+    private void saveEntity(Object o) {
         Session session = null;
         try {
             session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-            session.persist(user);
+            session.persist(o);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,41 +46,24 @@ public class DatabaseConnection {
         }
     }
 
-    public void saveWord(Word word) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
-            session.persist(word);
-            transaction.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(session != null) session.close();
-        }
+    protected void saveUser(User user) {
+        saveEntity(user);
     }
 
-    public void saveSentence(Sentence sentence) {
-        Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
-            session.persist(sentence);
-            transaction.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(session != null) session.close();
-        }
+    protected void saveWord(Word word) {
+        saveEntity(word);
     }
 
-    public User getUser(Integer id)
+    protected void saveSentence(Sentence sentence) {
+        saveEntity(sentence);
+    }
+
+    protected User getUser(Integer id)
     {
         Session session = null;
         User user = null;
         try {
             session = sessionFactory.openSession();
-
             user = session.get(User.class, id);
         } catch (Exception e){
             e.printStackTrace();
@@ -94,13 +74,12 @@ public class DatabaseConnection {
         return user;
     }
 
-    public Word getWord(Integer id)
+    protected Word getWord(Integer id)
     {
         Session session = null;
         Word word = null;
         try {
             session = sessionFactory.openSession();
-
             word = session.get(Word.class, id);
         } catch (Exception e){
             e.printStackTrace();
@@ -111,13 +90,12 @@ public class DatabaseConnection {
         return word;
     }
 
-    public Sentence getSentence(Integer id)
+    protected Sentence getSentence(Integer id)
     {
         Session session = null;
         Sentence sentence = null;
         try {
             session = sessionFactory.openSession();
-
             sentence = session.get(Sentence.class, id);
         } catch (Exception e){
             e.printStackTrace();
@@ -128,7 +106,41 @@ public class DatabaseConnection {
         return sentence;
     }
 
-    public void deleteUser(Integer id)
+    private void updateEntity(Object o) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
+            session.merge(o);
+
+            transaction.commit();
+        } catch (Exception e){
+            e.printStackTrace();
+            if(transaction != null) transaction.rollback();
+        } finally {
+            if(session != null) session.close();
+        }
+    }
+
+    protected void updateUser(User user)
+    {
+        updateEntity(user);
+    }
+
+    protected void updateWord(Word word)
+    {
+        updateEntity(word);
+    }
+
+    protected void updateSentence(Sentence sentence)
+    {
+        updateEntity(sentence);
+    }
+
+    protected void deleteUser(Integer id)
     {
         Session session = null;
         Transaction transaction = null;
@@ -150,7 +162,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void deleteWord(Integer id)
+    protected void deleteWord(Integer id)
     {
         Session session = null;
         Transaction transaction = null;
@@ -172,7 +184,7 @@ public class DatabaseConnection {
         }
     }
 
-    public void deleteSentence(Integer id)
+    protected void deleteSentence(Integer id)
     {
         Session session = null;
         Transaction transaction = null;
