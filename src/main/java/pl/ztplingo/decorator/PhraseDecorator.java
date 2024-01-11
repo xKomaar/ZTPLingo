@@ -1,6 +1,5 @@
 package pl.ztplingo.decorator;
 
-import pl.ztplingo.LanguageState;
 import pl.ztplingo.model.Phrase;
 import pl.ztplingo.model.User;
 
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 
 public abstract class PhraseDecorator implements Phrase {
     private Phrase wrappedPhrase;
-    private LanguageState language;
 
     public String getPolish() {
         return wrappedPhrase.getPolish();
@@ -44,13 +42,5 @@ public abstract class PhraseDecorator implements Phrase {
 
     public void setWrappedPhrase(Phrase phrase) {
         this.wrappedPhrase = phrase;
-    }
-
-    public LanguageState getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(LanguageState language) {
-        this.language = language;
     }
 }
