@@ -1,6 +1,8 @@
 package pl.ztplingo;
 
-public class LanguageSetting {
+public class Settings {
 
     public static LanguageState language;
+
+    public static Difficulty difficulty;
 }

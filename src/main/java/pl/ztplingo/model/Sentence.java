@@ -1,7 +1,6 @@
 package pl.ztplingo.model;
 
 import jakarta.persistence.*;
-import pl.ztplingo.LanguageState;
 
 import java.util.ArrayList;
 

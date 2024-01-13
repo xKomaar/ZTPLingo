@@ -1,7 +1,5 @@
 package pl.ztplingo.model;
 
-import pl.ztplingo.LanguageState;
-
 import java.util.ArrayList;
 
 public interface Phrase {

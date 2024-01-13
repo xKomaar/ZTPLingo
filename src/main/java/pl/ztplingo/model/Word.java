@@ -1,7 +1,6 @@
 package pl.ztplingo.model;
 
 import jakarta.persistence.*;
-import pl.ztplingo.LanguageState;
 
 import java.util.ArrayList;
 
@@ -53,6 +52,7 @@ public class Word implements Phrase {
         return shuffled;
     }
 
+    @Override
     public void setShuffled(ArrayList<String> shuffled) {
         this.shuffled = shuffled;
     }
