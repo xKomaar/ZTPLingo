@@ -1,4 +1,6 @@
 package pl.ztplingo.view;
 
-public class RegisterView {
+import javax.swing.*;
+
+public class RegisterView extends JPanel {
 }
