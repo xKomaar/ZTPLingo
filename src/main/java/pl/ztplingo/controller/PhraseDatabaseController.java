@@ -43,12 +43,14 @@ public class PhraseDatabaseController {
     public void deleteWord(Word word) {
         if(word != null) {
             databaseProxy.deleteWord(word);
+            phraseDatabaseView.printMenu();
         }
     }
 
     public void deleteSentence(Sentence sentence) {
         if(sentence != null) {
             databaseProxy.deleteSentence(sentence);
+            phraseDatabaseView.printMenu();
         }
     }
 
