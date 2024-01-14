@@ -31,6 +31,10 @@ public class DatabaseProxy implements Database {
         return databaseConnection.getUserById(id);
     }
 
+    public User getUserByUsername(String username) {
+        return databaseConnection.getUserByUsername(username);
+    }
+
     public Word getWordById(Integer id) {
         return databaseConnection.getWordById(id);
     }

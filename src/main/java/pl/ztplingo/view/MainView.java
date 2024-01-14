@@ -1,5 +1,8 @@
 package pl.ztplingo.view;
 
+import pl.ztplingo.controller.MainController;
+import pl.ztplingo.model.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,8 +13,14 @@ import java.awt.event.MouseEvent;
 public class MainView extends JPanel {
     private static final String[] options = {"WYKONAJ TEST", "ZRÓB SESJĘ NAUKI", "BAZA FRAZ", "WYJDŹ"};
     private JPanel menuPanel;
+    private MainController mainController;
+    private String username;
+    private Integer points;
 
-    public MainView() {
+    public MainView(MainController mainController) {
+        this.mainController = mainController;
+        username = mainController.getLoggedUser().getUsername();
+        points = mainController.getLoggedUser().getPoints();
         menuPanel = createMenuPanel();
         this.setLayout(new BorderLayout());
         this.add(menuPanel);
@@ -29,8 +38,6 @@ public class MainView extends JPanel {
         };
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        String username= "Alicja";
-        int points= 130;
         JLabel greetingLabel = new JLabel("Cześć, " + username);
         greetingLabel.setFont(new Font("Monospaced", Font.BOLD, 36));
         greetingLabel.setForeground(Color.BLUE);

@@ -11,6 +11,7 @@ public interface Database {
     void saveWord(Word word);
     void saveSentence(Sentence sentence);
     User getUserById(Integer id);
+    User getUserByUsername(String username);
     Word getWordById(Integer id);
     Sentence getSentenceById(Integer id);
     void updateUser(User user);

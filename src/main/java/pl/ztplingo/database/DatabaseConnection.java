@@ -15,7 +15,7 @@ import pl.ztplingo.model.Word;
 import java.util.ArrayList;
 import java.util.List;
 
-class DatabaseConnection implements Database {
+public class DatabaseConnection implements Database {
 
     private static DatabaseConnection instance;
 
@@ -69,6 +69,27 @@ class DatabaseConnection implements Database {
         try {
             session = sessionFactory.openSession();
             user = session.get(User.class, id);
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if(session != null) session.close();
+        }
+
+        return user;
+    }
+
+    public User getUserByUsername(String username)
+    {
+        Session session = null;
+        User user = null;
+        try {
+            session = sessionFactory.openSession();
+
+            Query query = session.createQuery("FROM User U WHERE U.username = :username");
+            query.setParameter("username", username);
+            if(!query.list().isEmpty()) {
+                user = (User) query.list().get(0);
+            }
         } catch (Exception e){
             e.printStackTrace();
         } finally {

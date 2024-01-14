@@ -1,12 +1,14 @@
 package pl.ztplingo.view;
 
+import pl.ztplingo.controller.LoginRegisterController;
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginView extends JPanel {
+public class LoginRegisterView extends JPanel {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JPasswordField confirmPasswordField;
@@ -16,7 +18,10 @@ public class LoginView extends JPanel {
     private Image backgroundImage;
     private boolean isLoginForm;
 
-    public LoginView(boolean isLoginForm) {
+    private LoginRegisterController loginRegisterController;
+
+    public LoginRegisterView(LoginRegisterController loginRegisterController, boolean isLoginForm) {
+        this.loginRegisterController = loginRegisterController;
         this.isLoginForm = isLoginForm;
         setLayout(new BorderLayout());
         backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("main.jpg")).getImage();
@@ -74,11 +79,7 @@ public class LoginView extends JPanel {
         actionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (isLoginForm) {
-                    performLogin();
-                } else {
-                    performRegistration();
-                }
+                performLoginOrRegistration();
             }
         });
         formPanel.add(actionButton, gbc);
@@ -105,12 +106,7 @@ public class LoginView extends JPanel {
         String username = usernameField.getText();
         char[] passwordChars = passwordField.getPassword();
         String password = new String(passwordChars);
-
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(new MainView());
-        frame.revalidate();
-        frame.repaint();
+        loginRegisterController.performLogin(username, password);
     }
 
     private void performRegistration() {
@@ -124,19 +120,25 @@ public class LoginView extends JPanel {
             JOptionPane.showMessageDialog(this, "Hasła się różnią", "Błąd rejestracji", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        loginRegisterController.performRegistration(username, password);
     }
 
-    private void switchForm() {
+    private void performLoginOrRegistration() {
+        if(isLoginForm) {
+            performLogin();
+        } else {
+            performRegistration();
+        }
+    }
+
+    public void switchForm() {
         isLoginForm = !isLoginForm;
+        System.out.println(isLoginForm);
         switchLabel.setText(isLoginForm ? "Nie masz jeszcze konta? Zarejestruj się" : "Masz już konto? Zaloguj się");
         actionButton.setText(isLoginForm ? "Zaloguj" : "Zarejestruj");
         confirmPasswordLabel.setVisible(!isLoginForm);
         confirmPasswordField.setVisible(!isLoginForm);
-        revalidate();
-        repaint();
-    }
-
-    private void switchToPanel(JPanel newPanel) {
         revalidate();
         repaint();
     }

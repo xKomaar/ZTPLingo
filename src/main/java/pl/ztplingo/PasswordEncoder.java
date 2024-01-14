@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class PasswordEncoder {
-    public String encode(String password) {
+    public static String encode(String password) {
         String encodedPassword = null;
         try {
             MessageDigest m = MessageDigest.getInstance("MD5");
