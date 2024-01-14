@@ -7,15 +7,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MainView extends JPanel {
-    private static final String[] options = {"WYKONAJ TEST", "ZRÓB SESJĘ NAUKI", "BAZA FRAZ", "WYJDŹ"};
+public class StartView extends JFrame {
+    private static final String[] options = {"Zaloguj", "Zarejestruj"};
     private JPanel menuPanel;
 
-    public MainView() {
+    public StartView() {
+        setTitle("ZTPLingo");
+        setSize(1040, 800);
+        setLocationRelativeTo(null);
         menuPanel = createMenuPanel();
-        this.setLayout(new BorderLayout());
-        this.add(menuPanel);
-        this.setVisible(true);
+        add(menuPanel);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
     }
 
     private JPanel createMenuPanel() {
@@ -29,30 +32,21 @@ public class MainView extends JPanel {
         };
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        String username= "Alicja";
-        int points= 130;
-        JLabel greetingLabel = new JLabel("Cześć, " + username);
-        greetingLabel.setFont(new Font("Monospaced", Font.BOLD, 36));
-        greetingLabel.setForeground(Color.BLUE);
+        JLabel titleLabel = new JLabel("ZTPLingo");
+        titleLabel.setFont(new Font("Monospaced", Font.BOLD, 38));
+        titleLabel.setForeground(Color.BLUE);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(greetingLabel, gbc);
-
-        JLabel pointsLabel = new JLabel("Twoje punkty: " + points);
-        pointsLabel.setFont(new Font("Monospaced", Font.BOLD, 24));
-        pointsLabel.setForeground(Color.BLUE);
-        gbc.gridy = 1;
-        panel.add(pointsLabel, gbc);
-
+        gbc.gridwidth = 2;
+        panel.add(titleLabel, gbc);
         JPanel buttonPanel = new JPanel();
         Font buttonFont = new Font("Monospaced", Font.BOLD, 24);
         buttonPanel.setLayout(new GridLayout(options.length, 2, 0, 10));
-        buttonPanel.setBackground(new Color(0, 0, 0, 0));
         for (int i = 0; i < options.length; i++) {
             JButton button = new JButton(options[i]);
             button.addActionListener(new MenuButtonListener(i));
             button.setFocusable(false);
-            Color orange = new Color(245, 131, 81);
+            Color orange= new Color(245, 131, 81);
             button.setBackground(orange);
             button.setFont(buttonFont);
             button.addMouseListener(new MouseAdapter() {
@@ -73,9 +67,8 @@ public class MainView extends JPanel {
             });
             buttonPanel.add(button);
         }
-
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 1;
         gbc.insets = new Insets(50, 0, 0, 0);
         panel.add(buttonPanel, gbc);
 
@@ -98,16 +91,18 @@ public class MainView extends JPanel {
     private void handleOption(int selectedOption) {
         switch (selectedOption) {
             case 0:
+                switchToPanel(new LoginView(true));
                 break;
             case 1:
-                System.out.println(1);
-                break;
-            case 2:
-                System.out.println("2");
-                break;
-            case 3:
-                System.exit(0);
+                switchToPanel(new LoginView(false));
                 break;
         }
+    }
+
+    private void switchToPanel(JPanel newPanel) {
+        getContentPane().removeAll();
+        getContentPane().add(newPanel);
+        revalidate();
+        repaint();
     }
 }
