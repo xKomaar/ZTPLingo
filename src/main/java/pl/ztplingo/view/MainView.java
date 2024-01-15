@@ -1,7 +1,6 @@
 package pl.ztplingo.view;
 
 import pl.ztplingo.controller.MainController;
-import pl.ztplingo.model.User;
 
 import javax.swing.*;
 import java.awt.*;

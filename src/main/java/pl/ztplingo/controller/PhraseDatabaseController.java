@@ -4,6 +4,7 @@ import pl.ztplingo.database.DatabaseProxy;
 import pl.ztplingo.model.Sentence;
 import pl.ztplingo.model.User;
 import pl.ztplingo.model.Word;
+import pl.ztplingo.view.PhraseDatabaseView;
 
 import javax.swing.*;
 import java.util.List;
