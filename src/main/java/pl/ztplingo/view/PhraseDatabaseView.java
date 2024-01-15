@@ -6,6 +6,5 @@ import javax.swing.*;
 
 public class PhraseDatabaseView extends JPanel {
     public PhraseDatabaseView(PhraseDatabaseController phraseDatabaseController) {
-
     }
 }

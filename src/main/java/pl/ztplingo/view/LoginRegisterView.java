@@ -14,6 +14,7 @@ public class LoginRegisterView extends JPanel {
     private JPasswordField confirmPasswordField;
     private JButton actionButton;
     private JLabel switchLabel;
+    private JLabel usernameLabel;
     private JLabel confirmPasswordLabel;
     private Image backgroundImage;
     private boolean isLoginForm;
@@ -36,7 +37,7 @@ public class LoginRegisterView extends JPanel {
         formPanel.setBackground(new Color(245, 131, 81));
         formPanel.setOpaque(true);
 
-        JLabel usernameLabel = new JLabel("Nazwa użytkownika:");
+        usernameLabel = new JLabel("Nazwa użytkownika:");
         usernameLabel.setFont(setFont(Font.BOLD, 18));
         formPanel.add(usernameLabel, gbc);
 
@@ -61,20 +62,20 @@ public class LoginRegisterView extends JPanel {
 
         gbc.gridy++;
         confirmPasswordLabel = new JLabel("Potwierdź hasło:");
-        confirmPasswordLabel.setFont(setFont(Font.BOLD,18));
+        confirmPasswordLabel.setFont(setFont(Font.BOLD, 18));
         confirmPasswordLabel.setVisible(!isLoginForm);
         formPanel.add(confirmPasswordLabel, gbc);
 
         gbc.gridy++;
         confirmPasswordField = new JPasswordField(20);
         confirmPasswordField.setPreferredSize(new Dimension(0, 40));
-        confirmPasswordField.setFont(setFont(Font.PLAIN,16));
+        confirmPasswordField.setFont(setFont(Font.PLAIN, 16));
         confirmPasswordField.setVisible(!isLoginForm);
         formPanel.add(confirmPasswordField, gbc);
 
         gbc.gridy++;
         actionButton = new JButton(isLoginForm ? "Zaloguj" : "Zarejestruj");
-        actionButton.setFont(setFont(Font.BOLD,18));
+        actionButton.setFont(setFont(Font.BOLD, 18));
         actionButton.setBackground(Color.BLUE);
         actionButton.addActionListener(new ActionListener() {
             @Override
@@ -87,7 +88,7 @@ public class LoginRegisterView extends JPanel {
         gbc.gridy++;
         gbc.insets = new Insets(5, 5, 10, 5);
         switchLabel = new JLabel(isLoginForm ? "Nie masz jeszcze konta? Zarejestruj się" : "Masz już konto? Zaloguj się");
-        switchLabel.setFont(setFont(Font.BOLD,16));
+        switchLabel.setFont(setFont(Font.BOLD, 16));
         switchLabel.setForeground(Color.WHITE);
         switchLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -125,7 +126,7 @@ public class LoginRegisterView extends JPanel {
     }
 
     private void performLoginOrRegistration() {
-        if(isLoginForm) {
+        if (isLoginForm) {
             performLogin();
         } else {
             performRegistration();

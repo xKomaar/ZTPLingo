@@ -39,7 +39,7 @@ public class StartView extends JPanel {
             }
         });
         loginButton.setFocusable(false);
-        Color orange= new Color(245, 131, 81);
+        Color orange = new Color(245, 131, 81);
         loginButton.setBackground(orange);
         loginButton.setFont(buttonFont);
         loginButton.addMouseListener(new MouseAdapter() {

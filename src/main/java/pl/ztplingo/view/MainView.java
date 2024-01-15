@@ -4,26 +4,30 @@ import pl.ztplingo.controller.MainController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MainView extends JPanel {
-    private static final String[] options = {"WYKONAJ TEST", "ZRÓB SESJĘ NAUKI", "BAZA FRAZ","KONTYNUUJ OSTATNIA", "WYJDŹ"};
     private JPanel menuPanel;
     private MainController mainController;
     private String username;
     private Integer points;
+    private JButton testButton;
+    private JButton sessionButton;
+    private JButton phrasesButton;
+    private JButton continueButton;
+    private JButton exitButton;
+    private Color orange;
+    private Font buttonFont;
 
     public MainView(MainController mainController) {
         this.mainController = mainController;
         username = mainController.getLoggedUser().getUsername();
         points = mainController.getLoggedUser().getPoints();
         menuPanel = createMenuPanel();
-        this.setLayout(new BorderLayout());
-        this.add(menuPanel);
-        this.setVisible(true);
+        setLayout(new BorderLayout());
+        add(menuPanel);
+        setVisible(true);
     }
 
     private JPanel createMenuPanel() {
@@ -35,6 +39,8 @@ public class MainView extends JPanel {
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         };
+        orange = new Color(245, 131, 81);
+        buttonFont = new Font("Monospaced", Font.BOLD, 24);
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         JLabel greetingLabel = new JLabel("Cześć, " + username);
@@ -51,34 +57,33 @@ public class MainView extends JPanel {
         panel.add(pointsLabel, gbc);
 
         JPanel buttonPanel = new JPanel();
-        Font buttonFont = new Font("Monospaced", Font.BOLD, 24);
-        buttonPanel.setLayout(new GridLayout(options.length, 2, 0, 10));
+        buttonPanel.setLayout(new GridLayout(5, 2, 0, 10));
         buttonPanel.setBackground(new Color(0, 0, 0, 0));
-        for (int i = 0; i < options.length; i++) {
-            JButton button = new JButton(options[i]);
-            button.addActionListener(new MenuButtonListener(i));
-            button.setFocusable(false);
-            Color orange = new Color(245, 131, 81);
-            button.setBackground(orange);
-            button.setFont(buttonFont);
-            button.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    button.setBackground(Color.BLUE);
-                }
 
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    button.setBackground(orange);
-                }
+        testButton = new JButton("WYKONAJ TEST");
+        testButton.addActionListener(e -> showPopup());
+        createButtonStyle(testButton);
+        buttonPanel.add(testButton);
 
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    button.setBackground(orange);
-                }
-            });
-            buttonPanel.add(button);
-        }
+        sessionButton = new JButton("ZRÓB SESJE NAUKI");
+        //sessionButton.addActionListener(e -> mainController.redirect());
+        createButtonStyle(sessionButton);
+        buttonPanel.add(sessionButton);
+
+        phrasesButton = new JButton("BAZA FRAZ");
+        // phrasesButton.addActionListener(e -> );
+        createButtonStyle(phrasesButton);
+        buttonPanel.add(phrasesButton);
+
+        continueButton = new JButton("KONTYNUUJ OSTATNIĄ");
+//      continueButton.addActionListener(e->);
+        createButtonStyle(continueButton);
+        buttonPanel.add(continueButton);
+
+        exitButton = new JButton("WYJDŹ");
+        exitButton.addActionListener(e -> System.exit(0));
+        createButtonStyle(exitButton);
+        buttonPanel.add(exitButton);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -88,32 +93,45 @@ public class MainView extends JPanel {
         return panel;
     }
 
-    private class MenuButtonListener implements ActionListener {
-        private final int optionIndex;
+    private void showPopup() {
+        JPanel panel = new JPanel(new GridLayout(4, 1));
+        String[] difficulties = {"Łatwy", "Trudny"};
+        JComboBox<String> difficultyComboBox = new JComboBox<>(difficulties);
+        panel.add(new JLabel("Wybierz poziom trudności:"));
+        panel.add(difficultyComboBox);
 
-        public MenuButtonListener(int optionIndex) {
-            this.optionIndex = optionIndex;
-        }
+        String[] languages = {"Polski -> Angielski", "Angielski -> Polski"};
+        JComboBox<String> languageComboBox = new JComboBox<>(languages);
+        panel.add(new JLabel("Wybierz tryb językowy:"));
+        panel.add(languageComboBox);
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            handleOption(optionIndex);
-        }
-    }
+        int result = JOptionPane.showConfirmDialog(null, panel, "Ustawienia", JOptionPane.OK_CANCEL_OPTION);
 
-    private void handleOption(int selectedOption) {
-        switch (selectedOption) {
-            case 0:
-                break;
-            case 1:
-                System.out.println(1);
-                break;
-            case 2:
-                System.out.println("2");
-                break;
-            case 3:
-                System.exit(0);
-                break;
+        if (result == JOptionPane.OK_OPTION) {
+            String difficulty = (String) difficultyComboBox.getSelectedItem();
+            String language = (String) languageComboBox.getSelectedItem();
         }
     }
+
+    public void createButtonStyle(JButton button) {
+        button.setBackground(orange);
+        button.setFont(buttonFont);
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(Color.BLUE);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(orange);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                button.setBackground(orange);
+            }
+        });
+    }
+
 }

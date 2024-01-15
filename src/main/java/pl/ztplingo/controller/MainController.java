@@ -7,6 +7,7 @@ import javax.swing.*;
 
 public class MainController {
     private MainView mainView;
+    private QuizController quizController;
     private JFrame appFrame;
     private User loggedUser;
 
