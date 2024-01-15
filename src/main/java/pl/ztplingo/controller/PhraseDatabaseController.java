@@ -29,7 +29,7 @@ public class PhraseDatabaseController {
         if(english != null && english.length() != 0 && polish != null && polish.length() != 0) {
             Word word = new Word(english, polish);
             databaseProxy.saveWord(word);
-            phraseDatabaseView.printMenu();
+            //phraseDatabaseView.printMenu();
         }
     }
 
@@ -37,21 +37,21 @@ public class PhraseDatabaseController {
         if(english != null && english.length() != 0 && polish != null && polish.length() != 0) {
             Sentence sentence = new Sentence(english, polish);
             databaseProxy.saveSentence(sentence);
-            phraseDatabaseView.printMenu();
+           // phraseDatabaseView.printMenu();
         }
     }
 
     public void deleteWord(Word word) {
         if(word != null) {
             databaseProxy.deleteWord(word);
-            phraseDatabaseView.printMenu();
+          //  phraseDatabaseView.printMenu();
         }
     }
 
     public void deleteSentence(Sentence sentence) {
         if(sentence != null) {
             databaseProxy.deleteSentence(sentence);
-            phraseDatabaseView.printMenu();
+          //  phraseDatabaseView.printMenu();
         }
     }
 

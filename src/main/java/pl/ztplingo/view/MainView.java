@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MainView extends JPanel {
-    private static final String[] options = {"WYKONAJ TEST", "ZRÓB SESJĘ NAUKI", "BAZA FRAZ", "WYJDŹ"};
+    private static final String[] options = {"WYKONAJ TEST", "ZRÓB SESJĘ NAUKI", "BAZA FRAZ","KONTYNUUJ OSTATNIA", "WYJDŹ"};
     private JPanel menuPanel;
     private MainController mainController;
     private String username;

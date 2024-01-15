@@ -1,4 +1,11 @@
 package pl.ztplingo.view;
 
-public class PhraseDatabaseView {
+import pl.ztplingo.controller.PhraseDatabaseController;
+
+import javax.swing.*;
+
+public class PhraseDatabaseView extends JPanel {
+    public PhraseDatabaseView(PhraseDatabaseController phraseDatabaseController) {
+
+    }
 }
