@@ -1,5 +1,7 @@
 package pl.ztplingo.view;
 
+import pl.ztplingo.Difficulty;
+import pl.ztplingo.LanguageState;
 import pl.ztplingo.controller.MainController;
 
 import javax.swing.*;
@@ -61,17 +63,17 @@ public class MainView extends JPanel {
         buttonPanel.setBackground(new Color(0, 0, 0, 0));
 
         testButton = new JButton("WYKONAJ TEST");
-        testButton.addActionListener(e -> showPopup());
+        testButton.addActionListener(e -> mainController.redirectToQuizController());
         createButtonStyle(testButton);
         buttonPanel.add(testButton);
 
         sessionButton = new JButton("ZRÓB SESJE NAUKI");
-        //sessionButton.addActionListener(e -> mainController.redirect());
+        sessionButton.addActionListener(e -> mainController.redirectToQuizController());
         createButtonStyle(sessionButton);
         buttonPanel.add(sessionButton);
 
         phrasesButton = new JButton("BAZA FRAZ");
-        // phrasesButton.addActionListener(e -> );
+        phrasesButton.addActionListener(e -> mainController.redirectToPhraseDatabaseController());
         createButtonStyle(phrasesButton);
         buttonPanel.add(phrasesButton);
 
@@ -93,7 +95,7 @@ public class MainView extends JPanel {
         return panel;
     }
 
-    private void showPopup() {
+    public void showSettingsPopup() {
         JPanel panel = new JPanel(new GridLayout(4, 1));
         String[] difficulties = {"Łatwy", "Trudny"};
         JComboBox<String> difficultyComboBox = new JComboBox<>(difficulties);
@@ -108,8 +110,20 @@ public class MainView extends JPanel {
         int result = JOptionPane.showConfirmDialog(null, panel, "Ustawienia", JOptionPane.OK_CANCEL_OPTION);
 
         if (result == JOptionPane.OK_OPTION) {
-            String difficulty = (String) difficultyComboBox.getSelectedItem();
-            String language = (String) languageComboBox.getSelectedItem();
+            Difficulty difficulty;
+            LanguageState language;
+
+            if(((String) difficultyComboBox.getSelectedItem()).equals("Łatwy")) {
+                difficulty = Difficulty.EASY;
+            } else {
+                difficulty = Difficulty.HARD;
+            }
+
+            if(((String) languageComboBox.getSelectedItem()).equals("Polski -> Angielski")) {
+                language = LanguageState.POLISH_TO_ENGLISH;
+            } else {
+                language = LanguageState.ENGLISH_TO_POLISH;
+            }
         }
     }
 

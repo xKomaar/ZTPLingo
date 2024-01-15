@@ -7,17 +7,18 @@ import pl.ztplingo.model.Word;
 import pl.ztplingo.view.PhraseDatabaseView;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PhraseDatabaseController {
     private PhraseDatabaseView phraseDatabaseView;
+    private MainController mainController;
     private DatabaseProxy databaseProxy;
     private JFrame appFrame;
-    private User loggedUser;
 
-    public void run(JFrame appFrame, User loggedUser) {
+    public void run(JFrame appFrame, MainController mainController) {
         databaseProxy = new DatabaseProxy();
-        this.loggedUser = loggedUser;
+        this.mainController = mainController;
         this.appFrame = appFrame;
         phraseDatabaseView = new PhraseDatabaseView(this);
         appFrame.getContentPane().add(phraseDatabaseView);
@@ -28,40 +29,57 @@ public class PhraseDatabaseController {
     public void addWord(String english, String polish) {
         if(english != null && english.length() != 0 && polish != null && polish.length() != 0) {
             Word word = new Word(english, polish);
+            word.setUser(mainController.getLoggedUser());
             databaseProxy.saveWord(word);
-            //phraseDatabaseView.printMenu();
         }
+        phraseDatabaseView.updateList();
     }
 
     public void addSentence(String english, String polish) {
         if(english != null && english.length() != 0 && polish != null && polish.length() != 0) {
             Sentence sentence = new Sentence(english, polish);
+            sentence.setUser(mainController.getLoggedUser());
             databaseProxy.saveSentence(sentence);
-           // phraseDatabaseView.printMenu();
         }
+        phraseDatabaseView.updateList();
     }
 
-    public void deleteWord(Word word) {
+    public void deleteWordByIndexOnList(int index) {
+        Word word = databaseProxy.getWordsByUser(mainController.getLoggedUser()).get(index);
         if(word != null) {
             databaseProxy.deleteWord(word);
-          //  phraseDatabaseView.printMenu();
         }
+        phraseDatabaseView.updateList();
     }
 
-    public void deleteSentence(Sentence sentence) {
+    public void deleteSentenceByIndexOnList(int index) {
+        Sentence sentence = databaseProxy.getSentencesByUser(mainController.getLoggedUser()).get(index);
         if(sentence != null) {
             databaseProxy.deleteSentence(sentence);
-          //  phraseDatabaseView.printMenu();
         }
+        phraseDatabaseView.updateList();
     }
 
-    public List<Word> getWords() {
-        List<Word> words = databaseProxy.getWordsByUser(loggedUser);
-        return words;
+    public List<String> getWordsToString() {
+        List<Word> words = databaseProxy.getWordsByUser(mainController.getLoggedUser());
+        List<String> wordsToString = new ArrayList<>();
+        for(Word word : words) {
+            wordsToString.add(word.getEnglish() + " | " + word.getPolish());
+        }
+        return wordsToString;
     }
 
-    public List<Sentence> getSentences() {
-        List<Sentence> sentences = databaseProxy.getSentencesByUser(loggedUser);
-        return sentences;
+    public List<String> getSentencesToString() {
+        List<Sentence> sentences = databaseProxy.getSentencesByUser(mainController.getLoggedUser());
+        List<String> sentencesToString = new ArrayList<>();
+        for(Sentence sentence : sentences) {
+            sentencesToString.add(sentence.getEnglish() + " | " + sentence.getPolish());
+        }
+        return sentencesToString;
+    }
+
+    public void returnToMainController() {
+        appFrame.getContentPane().removeAll();
+        mainController.run(appFrame);
     }
 }

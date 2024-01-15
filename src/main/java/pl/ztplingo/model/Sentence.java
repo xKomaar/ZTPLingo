@@ -1,6 +1,7 @@
 package pl.ztplingo.model;
 
 import jakarta.persistence.*;
+import pl.ztplingo.LanguageState;
 
 import java.util.ArrayList;
 
@@ -55,7 +56,7 @@ public class Sentence implements Phrase {
     }
 
     @Override
-    public void shuffle() {
+    public void shuffle(LanguageState language) {
         if(shuffled == null) {
             shuffled = new ArrayList<>();
         } else {

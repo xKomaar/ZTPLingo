@@ -29,7 +29,8 @@ public class LoginRegisterController {
         if(user != null) {
             if(user.getPassword().equals(encodedPassword)) {
                 appFrame.getContentPane().removeAll();
-                mainController.run(appFrame, user);
+                mainController.setLoggedUser(user);
+                mainController.run(appFrame);
             }
         }
     }

@@ -1,5 +1,6 @@
 package pl.ztplingo.controller;
 
+import pl.ztplingo.database.DatabaseProxy;
 import pl.ztplingo.model.User;
 import pl.ztplingo.view.MainView;
 
@@ -8,13 +9,16 @@ import javax.swing.*;
 public class MainController {
     private MainView mainView;
     private QuizController quizController;
+    private PhraseDatabaseController phraseDatabaseController;
+
     private JFrame appFrame;
     private User loggedUser;
 
-    public void run(JFrame appFrame, User loggedUser) {
-        this.loggedUser = loggedUser;
+    public void run(JFrame appFrame) {
         this.appFrame = appFrame;
         mainView = new MainView(this);
+        phraseDatabaseController = new PhraseDatabaseController();
+        quizController = new QuizController();
         appFrame.getContentPane().add(mainView);
         appFrame.getContentPane().revalidate();
         appFrame.getContentPane().repaint();
@@ -22,5 +26,20 @@ public class MainController {
 
     public User getLoggedUser() {
         return loggedUser;
+    }
+
+    public void setLoggedUser(User user) {
+        loggedUser = user;
+    }
+
+    public void redirectToPhraseDatabaseController() {
+        appFrame.getContentPane().removeAll();
+        phraseDatabaseController.run(appFrame, this);
+    }
+
+    public void redirectToQuizController() {
+        mainView.showSettingsPopup();
+        appFrame.getContentPane().removeAll();
+        quizController.run(appFrame, this);
     }
 }
