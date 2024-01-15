@@ -3,8 +3,6 @@ package pl.ztplingo.view;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginView extends JPanel {
     private JTextField usernameField;
@@ -71,14 +69,11 @@ public class LoginView extends JPanel {
         actionButton = new JButton(isLoginForm ? "Zaloguj" : "Zarejestruj");
         actionButton.setFont(setFont(Font.BOLD,18));
         actionButton.setBackground(Color.BLUE);
-        actionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (isLoginForm) {
-                    performLogin();
-                } else {
-                    performRegistration();
-                }
+        actionButton.addActionListener(e -> {
+            if (isLoginForm) {
+                performLogin();
+            } else {
+                performRegistration();
             }
         });
         formPanel.add(actionButton, gbc);

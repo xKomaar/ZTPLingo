@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class StartView extends JFrame {
-    private static final String[] options = {"Zaloguj", "Zarejestruj"};
+    private static final String[] options = {"ZALOGUJ", "ZAREJESTRUJ"};
     private JPanel menuPanel;
 
     public StartView() {
@@ -43,10 +43,16 @@ public class StartView extends JFrame {
         Font buttonFont = new Font("Monospaced", Font.BOLD, 24);
         buttonPanel.setLayout(new GridLayout(options.length, 2, 0, 10));
         for (int i = 0; i < options.length; i++) {
+            final int optionIndex = i;
             JButton button = new JButton(options[i]);
-            button.addActionListener(new MenuButtonListener(i));
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    switchToPanel(new LoginView(optionIndex == 0));
+                }
+            });
             button.setFocusable(false);
-            Color orange= new Color(245, 131, 81);
+            Color orange = new Color(245, 131, 81);
             button.setBackground(orange);
             button.setFont(buttonFont);
             button.addMouseListener(new MouseAdapter() {
@@ -73,30 +79,6 @@ public class StartView extends JFrame {
         panel.add(buttonPanel, gbc);
 
         return panel;
-    }
-
-    private class MenuButtonListener implements ActionListener {
-        private final int optionIndex;
-
-        public MenuButtonListener(int optionIndex) {
-            this.optionIndex = optionIndex;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            handleOption(optionIndex);
-        }
-    }
-
-    private void handleOption(int selectedOption) {
-        switch (selectedOption) {
-            case 0:
-                switchToPanel(new LoginView(true));
-                break;
-            case 1:
-                switchToPanel(new LoginView(false));
-                break;
-        }
     }
 
     private void switchToPanel(JPanel newPanel) {

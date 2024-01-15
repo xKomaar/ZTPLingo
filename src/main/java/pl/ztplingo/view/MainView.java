@@ -51,7 +51,6 @@ public class MainView extends JPanel {
         for (int i = 0; i < options.length; i++) {
             JButton button = new JButton(options[i]);
             button.addActionListener(new MenuButtonListener(i));
-            button.setFocusable(false);
             Color orange = new Color(245, 131, 81);
             button.setBackground(orange);
             button.setFont(buttonFont);
@@ -98,9 +97,11 @@ public class MainView extends JPanel {
     private void handleOption(int selectedOption) {
         switch (selectedOption) {
             case 0:
+                showPopup();
                 break;
             case 1:
-                System.out.println(1);
+                showPopup();
+                switchToPanel(new QuizView());
                 break;
             case 2:
                 System.out.println("2");
@@ -109,5 +110,34 @@ public class MainView extends JPanel {
                 System.exit(0);
                 break;
         }
+    }
+
+    private void showPopup() {
+        JPanel panel = new JPanel(new GridLayout(4, 1));
+        String[] difficulties = {"Łatwy", "Trudny"};
+        JComboBox<String> difficultyComboBox = new JComboBox<>(difficulties);
+        panel.add(new JLabel("Wybierz poziom trudności:"));
+        panel.add(difficultyComboBox);
+
+        String[] languages = {"Polski -> Angielski", "Angielski -> Polski"};
+        JComboBox<String> languageComboBox = new JComboBox<>(languages);
+        panel.add(new JLabel("Wybierz tryb językowy:"));
+        panel.add(languageComboBox);
+
+        int result = JOptionPane.showConfirmDialog(null, panel,
+                "Ustawienia", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String difficulty = (String) difficultyComboBox.getSelectedItem();
+            String language = (String) languageComboBox.getSelectedItem();
+        }
+    }
+
+    private void switchToPanel(JPanel newPanel) {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(newPanel);
+        frame.revalidate();
+        frame.repaint();
     }
 }
