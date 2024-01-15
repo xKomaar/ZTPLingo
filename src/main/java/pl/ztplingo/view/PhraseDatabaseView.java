@@ -8,3 +8,5 @@ public class PhraseDatabaseView extends JPanel {
     public PhraseDatabaseView(PhraseDatabaseController phraseDatabaseController) {
     }
 }
+
+
