@@ -2,6 +2,7 @@ package pl.ztplingo.view;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class QuizView extends JPanel {
@@ -14,8 +15,7 @@ public class QuizView extends JPanel {
     public QuizView() {
         this.setLayout(new BorderLayout());
         this.backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("blackboard.jpg")).getImage();
-        setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(200, 300, 200, 300),
-                BorderFactory.createLineBorder(new Color(0,0,0,0))));
+        setBorder(new EmptyBorder(100, 10, 10, 10));
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridBagLayout());
         formPanel.setBackground(new Color(0, 0, 0, 0));

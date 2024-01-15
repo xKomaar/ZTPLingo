@@ -51,7 +51,7 @@ public class MainView extends JPanel {
         for (int i = 0; i < options.length; i++) {
             JButton button = new JButton(options[i]);
             button.addActionListener(new MenuButtonListener(i));
-            Color orange = new Color(245, 131, 81);
+            Color orange = new Color(245, 131, 81,200);
             button.setBackground(orange);
             button.setFont(buttonFont);
             button.addMouseListener(new MouseAdapter() {
@@ -104,7 +104,7 @@ public class MainView extends JPanel {
                 switchToPanel(new QuizView());
                 break;
             case 2:
-                System.out.println("2");
+                switchToPanel(new PhraseDatabaseView());
                 break;
             case 3:
                 System.exit(0);
