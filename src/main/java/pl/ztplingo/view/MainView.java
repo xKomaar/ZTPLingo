@@ -19,6 +19,7 @@ public class MainView extends JPanel {
     private JButton phrasesButton;
     private JButton continueButton;
     private JButton exitButton;
+    private Image backgroundImage;
     private Color orange;
     private Font buttonFont;
 
@@ -26,37 +27,25 @@ public class MainView extends JPanel {
         this.mainController = mainController;
         username = mainController.getLoggedUser().getUsername();
         points = mainController.getLoggedUser().getPoints();
-        menuPanel = createMenuPanel();
         setLayout(new BorderLayout());
-        add(menuPanel);
         setVisible(true);
-    }
-
-    private JPanel createMenuPanel() {
-        JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Image backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("main.jpg")).getImage();
-                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-            }
-        };
+        backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("main.jpg")).getImage();
         orange = new Color(245, 131, 81);
         buttonFont = new Font("Monospaced", Font.BOLD, 24);
-        panel.setLayout(new GridBagLayout());
+        setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         JLabel greetingLabel = new JLabel("Cześć, " + username);
         greetingLabel.setFont(new Font("Monospaced", Font.BOLD, 36));
         greetingLabel.setForeground(Color.BLUE);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(greetingLabel, gbc);
+        add(greetingLabel, gbc);
 
         JLabel pointsLabel = new JLabel("Twoje punkty: " + points);
         pointsLabel.setFont(new Font("Monospaced", Font.BOLD, 24));
         pointsLabel.setForeground(Color.BLUE);
         gbc.gridy = 1;
-        panel.add(pointsLabel, gbc);
+        add(pointsLabel, gbc);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(5, 2, 0, 10));
@@ -77,8 +66,8 @@ public class MainView extends JPanel {
         createButtonStyle(phrasesButton);
         buttonPanel.add(phrasesButton);
 
-        continueButton = new JButton("KONTYNUUJ OSTATNIĄ");
-//      continueButton.addActionListener(e->);
+        continueButton = new JButton("OSTATNIA PRZERWANA");
+        continueButton.addActionListener(e -> mainController.redirectToQuizControllerWithSnapshot());
         createButtonStyle(continueButton);
         buttonPanel.add(continueButton);
 
@@ -90,41 +79,7 @@ public class MainView extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.insets = new Insets(50, 0, 0, 0);
-        panel.add(buttonPanel, gbc);
-
-        return panel;
-    }
-
-    public void showSettingsPopup() {
-        JPanel panel = new JPanel(new GridLayout(4, 1));
-        String[] difficulties = {"Łatwy", "Trudny"};
-        JComboBox<String> difficultyComboBox = new JComboBox<>(difficulties);
-        panel.add(new JLabel("Wybierz poziom trudności:"));
-        panel.add(difficultyComboBox);
-
-        String[] languages = {"Polski -> Angielski", "Angielski -> Polski"};
-        JComboBox<String> languageComboBox = new JComboBox<>(languages);
-        panel.add(new JLabel("Wybierz tryb językowy:"));
-        panel.add(languageComboBox);
-
-        int result = JOptionPane.showConfirmDialog(null, panel, "Ustawienia", JOptionPane.OK_CANCEL_OPTION);
-
-        if (result == JOptionPane.OK_OPTION) {
-            Difficulty difficulty;
-            LanguageState language;
-
-            if(((String) difficultyComboBox.getSelectedItem()).equals("Łatwy")) {
-                difficulty = Difficulty.EASY;
-            } else {
-                difficulty = Difficulty.HARD;
-            }
-
-            if(((String) languageComboBox.getSelectedItem()).equals("Polski -> Angielski")) {
-                language = LanguageState.POLISH_TO_ENGLISH;
-            } else {
-                language = LanguageState.ENGLISH_TO_POLISH;
-            }
-        }
+        add(buttonPanel, gbc);
     }
 
     public void createButtonStyle(JButton button) {
@@ -148,4 +103,9 @@ public class MainView extends JPanel {
         });
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+    }
 }

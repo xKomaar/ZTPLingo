@@ -1,10 +1,13 @@
 package pl.ztplingo.view;
 
+import pl.ztplingo.Difficulty;
+import pl.ztplingo.LanguageState;
 import pl.ztplingo.controller.QuizController;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
+import java.util.Objects;
 
 public class QuizView extends JPanel {
     private QuizController quizController;
@@ -49,14 +52,72 @@ public class QuizView extends JPanel {
         quizPanel.add(submitButton, gbc);
 
         gbc.gridy++;
-        cancelLearningButton = new JButton("Przerwij naukę");
+        cancelLearningButton = new JButton("Przerwij sesję");
         cancelLearningButton.setFont(setFont(Font.BOLD, 18));
         cancelLearningButton.setForeground(Color.WHITE);
         cancelLearningButton.setBackground(Color.RED);
-        // cancelLearningButton.addActionListener(e -> whatdoYouWant());
+        cancelLearningButton.addActionListener(e -> quizController.invalidateQuizSessionWithSnapshot());
+        quizPanel.add(cancelLearningButton, gbc);
+
+        gbc.gridy++;
+        cancelLearningButton = new JButton("Anuluj sesję");
+        cancelLearningButton.setFont(setFont(Font.BOLD, 18));
+        cancelLearningButton.setForeground(Color.WHITE);
+        cancelLearningButton.setBackground(Color.RED);
+        cancelLearningButton.addActionListener(e -> quizController.invalidateQuizSession());
         quizPanel.add(cancelLearningButton, gbc);
 
         add(quizPanel, BorderLayout.CENTER);
+    }
+
+    public void showSettingsPopup() {
+        JPanel panel = new JPanel(new GridLayout(4, 1));
+        String[] difficulties = {"Łatwy", "Trudny"};
+        JComboBox<String> difficultyComboBox = new JComboBox<>(difficulties);
+        panel.add(new JLabel("Poziom trudności:"));
+        panel.add(difficultyComboBox);
+
+        String[] languages = {"Polski -> Angielski", "Angielski -> Polski"};
+        JComboBox<String> languageComboBox = new JComboBox<>(languages);
+        panel.add(new JLabel("Tryb językowy:"));
+        panel.add(languageComboBox);
+
+        SpinnerModel spinnerModel = new SpinnerNumberModel(10, 1, 30, 1);
+        JSpinner spinner = new JSpinner(spinnerModel);
+        panel.add(new JLabel("Ilość pytań"));
+        panel.add(spinner);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Ustawienia", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            Difficulty difficulty;
+            LanguageState language;
+            int questionQuantity;
+
+            if(Objects.equals((String) difficultyComboBox.getSelectedItem(), "Łatwy")) {
+                difficulty = Difficulty.EASY;
+            } else {
+                difficulty = Difficulty.HARD;
+            }
+
+            if(Objects.equals((String) languageComboBox.getSelectedItem(), "Polski -> Angielski")) {
+                language = LanguageState.POLISH_TO_ENGLISH;
+            } else {
+                language = LanguageState.ENGLISH_TO_POLISH;
+            }
+
+            questionQuantity = (Integer)spinner.getValue();
+
+            quizController.initQuizSession(language, difficulty, questionQuantity);
+        }
+    }
+
+    public void showQuestionQuantityError() {
+        JOptionPane.showMessageDialog(this, "Liczba pytań nie może być większa niż liczba fraz w bazie", "Za mało fraz w bazie", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showNoSnapshotError() {
+        JOptionPane.showMessageDialog(this, "Aby zapisać jakąś sesję użyj przysisku \"Przerwij sesję\" podczas jej wykonywania", "Brak Zapisanej Sesji", JOptionPane.ERROR_MESSAGE);
     }
 
     private Font setFont(int style, int size) {

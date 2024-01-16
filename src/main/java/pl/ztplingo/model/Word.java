@@ -25,13 +25,13 @@ public class Word implements Phrase {
     private User user;
 
     @Transient
-    private ArrayList<String> shuffled;
+    private ArrayList<String> shuffledAnswer;
 
 
     public Word(String polish, String english) {
         this.polish = polish;
         this.english = english;
-        this.shuffled = null;
+        this.shuffledAnswer = null;
     }
 
     public Word() {
@@ -49,21 +49,21 @@ public class Word implements Phrase {
     }
 
     @Override
-    public ArrayList<String> getShuffled() {
-        return shuffled;
+    public ArrayList<String> getShuffledAnswer() {
+        return shuffledAnswer;
     }
 
     @Override
-    public void setShuffled(ArrayList<String> shuffled) {
-        this.shuffled = shuffled;
+    public void setShuffledAnswer(ArrayList<String> shuffledAnswer) {
+        this.shuffledAnswer = shuffledAnswer;
     }
 
     @Override
     public void shuffle(LanguageState language) {
-        if(shuffled == null) {
-            shuffled = new ArrayList<>();
+        if(shuffledAnswer == null) {
+            shuffledAnswer = new ArrayList<>();
         } else {
-            shuffled.clear();
+            shuffledAnswer.clear();
         }
     }
 

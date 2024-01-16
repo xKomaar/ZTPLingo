@@ -1,6 +1,5 @@
 package pl.ztplingo.controller;
 
-import pl.ztplingo.database.DatabaseProxy;
 import pl.ztplingo.model.User;
 import pl.ztplingo.view.MainView;
 
@@ -38,8 +37,12 @@ public class MainController {
     }
 
     public void redirectToQuizController() {
-        mainView.showSettingsPopup();
         appFrame.getContentPane().removeAll();
         quizController.run(appFrame, this);
+    }
+
+    public void redirectToQuizControllerWithSnapshot() {
+        appFrame.getContentPane().removeAll();
+        quizController.runFromSnapshot(appFrame, this);
     }
 }

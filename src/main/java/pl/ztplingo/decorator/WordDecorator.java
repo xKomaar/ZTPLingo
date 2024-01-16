@@ -14,14 +14,14 @@ public class WordDecorator extends PhraseDecorator {
 
     public void shuffle(LanguageState language) {
         this.getWrappedPhrase().shuffle(language);
-        ArrayList<String> shuffled = this.getWrappedPhrase().getShuffled();
+        ArrayList<String> shuffled = this.getWrappedPhrase().getShuffledAnswer();
         if(language == LanguageState.ENGLISH_TO_POLISH) {
-            shuffled = divideIntoSyllables(getEnglish());
-        } else {
             shuffled = divideIntoSyllables(getPolish());
+        } else {
+            shuffled = divideIntoSyllables(getEnglish());
         }
         Collections.shuffle(shuffled);
-        setShuffled(shuffled);
+        setShuffledAnswer(shuffled);
     }
 
     private ArrayList<String> divideIntoSyllables(String word) {

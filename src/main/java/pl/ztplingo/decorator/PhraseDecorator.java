@@ -16,12 +16,12 @@ public abstract class PhraseDecorator implements Phrase {
         return wrappedPhrase.getEnglish();
     }
     
-    public ArrayList<String> getShuffled() {
-        return wrappedPhrase.getShuffled();
+    public ArrayList<String> getShuffledAnswer() {
+        return wrappedPhrase.getShuffledAnswer();
     }
 
-    public void setShuffled(ArrayList<String> shuffled) {
-        wrappedPhrase.setShuffled(shuffled);
+    public void setShuffledAnswer(ArrayList<String> shuffled) {
+        wrappedPhrase.setShuffledAnswer(shuffled);
     }
     
     public Integer getId() {

@@ -7,10 +7,10 @@ import java.util.ArrayList;
 public interface Phrase {
     String getPolish();
     String getEnglish();
-    ArrayList<String> getShuffled();
+    ArrayList<String> getShuffledAnswer();
     void shuffle(LanguageState language);
     Integer getId();
     User getUser();
     void setUser(User user);
-    void setShuffled(ArrayList<String> shuffled);
+    void setShuffledAnswer(ArrayList<String> shuffled);
 }
