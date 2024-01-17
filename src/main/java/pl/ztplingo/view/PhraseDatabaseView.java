@@ -10,15 +10,16 @@ public class PhraseDatabaseView extends JPanel {
     private JList<String> phraseList;
     private JTextField polishTextField, englishTextField;
     private JButton showWordsButton, showSentencesButton, removeButton, addWordButton, backButton;
+    private Image backgroundImage;
 
     private boolean showWords = true;
 
     public PhraseDatabaseView() {
+        this.backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("blackboard.jpg")).getImage();
         wordListModel = new DefaultListModel<>();
         sentenceListModel = new DefaultListModel<>();
         Color orange = new Color(245, 131, 81);
         Color darkblue = new Color(18, 42, 52);
-        setBackground(darkblue);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBorder(new EmptyBorder(20, 10, 20, 10));
@@ -152,5 +153,10 @@ public class PhraseDatabaseView extends JPanel {
         }
         polishTextField.setText("");
         englishTextField.setText("");
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
 }
