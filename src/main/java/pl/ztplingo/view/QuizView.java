@@ -25,7 +25,7 @@ public class QuizView extends JPanel {
         this.quizController = quizController;
         setLayout(new BorderLayout());
         backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("blackboard.jpg")).getImage();
-        setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(200, 300, 200, 300),
+        setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100),
                 BorderFactory.createLineBorder(new Color(0, 0, 0, 0))));
         quizPanel = new JPanel();
         quizPanel.setLayout(new GridBagLayout());

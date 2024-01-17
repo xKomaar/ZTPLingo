@@ -24,7 +24,7 @@ public class KeyboardInputStrategy implements AnswerInputStrategy {
         answerInput.setFont(new Font("Monospaced", Font.PLAIN, 16));
         answerInput.setBackground(Color.WHITE);
         answerInput.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(answerInput, 1);
+        panel.add(answerInput, gbc);
 
         panel.revalidate();
         panel.repaint();

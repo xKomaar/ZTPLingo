@@ -6,8 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -20,7 +18,7 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
     private Stack<String> selectedWords;
     private JTextField answerInput;
     private JButton backButton;
-    
+
     @Override
     public void printQuestionAndAnswerInput(JLabel questionLabel, JPanel panel, GridBagConstraints gbc, QuizSession quizSession) {
 
@@ -37,30 +35,6 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
         wordsPanel.setBackground(new Color(0, 0, 0,0));
         panel.add(wordsPanel, gbc);
 
-        gbc.gridy=2;
-        answerInput = new JTextField(40);
-        answerInput.setCaretPosition(0);
-        answerInput.setPreferredSize(new Dimension(0, 40));
-        answerInput.setFont(new Font("Monospaced", Font.PLAIN, 16));
-        answerInput.setBackground(Color.WHITE);
-        answerInput.setEditable(false);
-        answerInput.setHorizontalAlignment(SwingConstants.CENTER);
-        answerInput.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                answerInput.setFocusable(false);
-            }
-        });
-
-        gbc.gridy=3;
-        panel.add(answerInput, gbc);
-        backButton = new JButton("Cofnij");
-        backButton.setFont(new Font("Monospaced", Font.BOLD, 18));
-        backButton.setForeground(Color.white);
-        backButton.setBackground(Color.RED);
-        backButton.addActionListener(new SentenceByWordInputStrategy.BackButtonListener());
-        panel.add(backButton, gbc);
-
         wordsPanel.removeAll();
         for (String word : words) {
             JButton button = new JButton(word);
@@ -68,6 +42,25 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
             wordButtons.add(button);
             wordsPanel.add(button);
         }
+
+        gbc.gridy=2;
+        answerInput = new JTextField(40);
+        answerInput.setPreferredSize(new Dimension(0, 40));
+        answerInput.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        answerInput.setBackground(Color.WHITE);
+        answerInput.setHorizontalAlignment(SwingConstants.CENTER);
+        answerInput.setEditable(false);
+        panel.add(answerInput, gbc);
+
+
+        gbc.gridy=3;
+        backButton = new JButton("Cofnij");
+        backButton.setFont(new Font("Monospaced", Font.BOLD, 18));
+        backButton.setForeground(Color.white);
+        backButton.setBackground(Color.RED);
+        backButton.addActionListener(new SentenceByWordInputStrategy.BackButtonListener());
+        panel.add(backButton, gbc);
+
         panel.revalidate();
         panel.repaint();
     }

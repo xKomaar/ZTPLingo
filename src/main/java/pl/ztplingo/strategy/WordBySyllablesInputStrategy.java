@@ -39,21 +39,14 @@ public class WordBySyllablesInputStrategy implements AnswerInputStrategy {
 
         gbc.gridy=2;
         answerInput = new JTextField(40);
-        answerInput.setCaretPosition(0);
         answerInput.setPreferredSize(new Dimension(0, 40));
         answerInput.setFont(new Font("Monospaced", Font.PLAIN, 16));
         answerInput.setBackground(Color.WHITE);
-        answerInput.setEditable(false);
         answerInput.setHorizontalAlignment(SwingConstants.CENTER);
-        answerInput.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                answerInput.setFocusable(false);
-            }
-        });
+        answerInput.setEditable(false);
+        panel.add(answerInput, gbc);
 
         gbc.gridy=3;
-        panel.add(answerInput, gbc);
         backButton = new JButton("Cofnij");
         backButton.setFont(new Font("Monospaced", Font.BOLD, 18));
         backButton.setForeground(Color.white);
@@ -94,7 +87,7 @@ public class WordBySyllablesInputStrategy implements AnswerInputStrategy {
             if (!selectedSyllables.isEmpty()) {
                 String lastSelectedsyllable = selectedSyllables.pop();
                 String currentText = answerInput.getText();
-                int lastIndexOf = currentText.lastIndexOf(" " + lastSelectedsyllable);
+                int lastIndexOf = currentText.lastIndexOf(lastSelectedsyllable);
 
                 if (lastIndexOf != -1) {
                     answerInput.setText(currentText.substring(0, lastIndexOf));
