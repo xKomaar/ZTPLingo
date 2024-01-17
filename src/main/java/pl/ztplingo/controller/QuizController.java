@@ -81,7 +81,6 @@ public class QuizController {
             quizView.printQuestionAndAnswerInput(quizSession);
 
         } else {
-            System.out.println(quizSession.getCurrentPoints());
             addPointsToLoggedUser(quizSession.getCurrentPoints());
             invalidateQuizSession();
         }

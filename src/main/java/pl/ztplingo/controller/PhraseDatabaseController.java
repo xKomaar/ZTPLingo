@@ -73,7 +73,7 @@ public class PhraseDatabaseController {
         List<Sentence> sentences = databaseProxy.getSentencesByUser(mainController.getLoggedUser());
         List<String> sentencesToString = new ArrayList<>();
         for(Sentence sentence : sentences) {
-            sentencesToString.add(sentence.getEnglish() + " | " + sentence.getPolish());
+            sentencesToString.add(sentence.getPolish() + " | " + sentence.getEnglish());
         }
         return sentencesToString;
     }
