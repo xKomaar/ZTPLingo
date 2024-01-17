@@ -31,6 +31,25 @@ public class QuizController {
         quizView.showSettingsPopup();
     }
 
+    public void runFromSnapshot(JFrame appFrame, MainController mainController) {
+        this.databaseProxy = new DatabaseProxy();
+        this.appFrame = appFrame;
+        this.mainController = mainController;
+        quizView = new QuizView(this);
+
+        if(quizSessionSnapshot != null) {
+            quizSessionSnapshot.restore(this.quizSession);
+            appFrame.getContentPane().add(quizView);
+            appFrame.getContentPane().revalidate();
+            appFrame.getContentPane().repaint();
+            setAnswerInputStrategy();
+            quizView.printQuestionAndAnswerInput(quizSession);
+        } else {
+            quizView.showNoSnapshotError();
+            invalidateQuizSession();
+        }
+    }
+
     public void initQuizSession(LanguageState language, Difficulty difficulty, int questionQuantity) {
         int userPhraseQuantity = databaseProxy.getWordsByUser(mainController.getLoggedUser()).size() +
                 databaseProxy.getSentencesByUser(mainController.getLoggedUser()).size();
@@ -57,14 +76,7 @@ public class QuizController {
         if(!quizSession.isFinished()) {
             quizSession.loadNextPhrase();
 
-            //ustawienie strategii inputu
-            if(quizSession.getDifficulty() == Difficulty.HARD) {
-                quizView.setAnswerInputStrategy(new KeyboardInputStrategy());
-            } else if (quizSession.getCurrentPhrase().getWrappedPhrase() instanceof Word) {
-                quizView.setAnswerInputStrategy(new WordBySyllablesInputStrategy());
-            } else {
-                quizView.setAnswerInputStrategy(new SentenceByWordInputStrategy());
-            }
+            setAnswerInputStrategy();
 
             quizView.printQuestionAndAnswerInput(quizSession);
 
@@ -99,18 +111,13 @@ public class QuizController {
         databaseProxy.updateUser(loggedUser);
     }
 
-    public void runFromSnapshot(JFrame appFrame, MainController mainController) {
-        this.databaseProxy = new DatabaseProxy();
-        this.appFrame = appFrame;
-        this.mainController = mainController;
-        quizView = new QuizView(this);
-
-        if(quizSessionSnapshot != null) {
-            quizSessionSnapshot.restore(this.quizSession);
-            printNextQuestion();
+    private void setAnswerInputStrategy() {
+        if(quizSession.getDifficulty() == Difficulty.HARD) {
+            quizView.setAnswerInputStrategy(new KeyboardInputStrategy());
+        } else if (quizSession.getCurrentPhrase().getWrappedPhrase() instanceof Word) {
+            quizView.setAnswerInputStrategy(new WordBySyllablesInputStrategy());
         } else {
-            quizView.showNoSnapshotError();
-            invalidateQuizSession();
+            quizView.setAnswerInputStrategy(new SentenceByWordInputStrategy());
         }
     }
 }

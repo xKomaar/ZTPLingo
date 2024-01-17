@@ -30,16 +30,12 @@ public class QuizSession {
     public void loadNextPhrase() {
         currentPhrase = questionListIterator.next();
         if(!questionListIterator.hasNext()) {
-            setFinishedToTrue();
+            finished = true;
         }
     }
 
     public boolean isFinished() {
         return finished;
-    }
-
-    public void setFinishedToTrue() {
-        finished = true;
     }
 
     public boolean checkAnswer(String answer) {
