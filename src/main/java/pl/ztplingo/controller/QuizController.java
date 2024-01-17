@@ -3,12 +3,14 @@ package pl.ztplingo.controller;
 import pl.ztplingo.Difficulty;
 import pl.ztplingo.LanguageState;
 import pl.ztplingo.database.DatabaseProxy;
-import pl.ztplingo.iterator.QuestionListIterator;
 import pl.ztplingo.model.QuestionList;
 import pl.ztplingo.model.QuizSession;
 import pl.ztplingo.model.User;
+import pl.ztplingo.model.Word;
 import pl.ztplingo.snapshot.QuizSessionSnapshot;
-import pl.ztplingo.view.MainView;
+import pl.ztplingo.strategy.KeyboardInputStrategy;
+import pl.ztplingo.strategy.SentenceByWordInputStrategy;
+import pl.ztplingo.strategy.WordBySyllablesInputStrategy;
 import pl.ztplingo.view.QuizView;
 
 import javax.swing.*;
@@ -41,6 +43,7 @@ public class QuizController {
             appFrame.getContentPane().add(quizView);
             appFrame.getContentPane().revalidate();
             appFrame.getContentPane().repaint();
+            printNextQuestion();
         }
     }
 
@@ -49,8 +52,32 @@ public class QuizController {
                 databaseProxy.getSentencesByUser(mainController.getLoggedUser()), quantity);
     }
 
-    public void startQuiz() {
+    public void printNextQuestion() {
 
+        if(!quizSession.isFinished()) {
+            quizSession.loadNextPhrase();
+
+            //ustawienie strategii inputu
+            if(quizSession.getDifficulty() == Difficulty.HARD) {
+                quizView.setAnswerInputStrategy(new KeyboardInputStrategy());
+            } else if (quizSession.getCurrentPhrase().getWrappedPhrase() instanceof Word) {
+                quizView.setAnswerInputStrategy(new WordBySyllablesInputStrategy());
+            } else {
+                quizView.setAnswerInputStrategy(new SentenceByWordInputStrategy());
+            }
+
+            quizView.printQuestionAndAnswerInput(quizSession);
+
+        } else {
+            System.out.println(quizSession.getCurrentPoints());
+            addPointsToLoggedUser(quizSession.getCurrentPoints());
+            invalidateQuizSession();
+        }
+    }
+
+    public void checkAnswerAndGoNext(String answer) {
+        quizSession.checkAnswer(answer);
+        printNextQuestion();
     }
 
     public void invalidateQuizSessionWithSnapshot() {
@@ -65,12 +92,22 @@ public class QuizController {
         mainController.run(appFrame);
     }
 
+    private void addPointsToLoggedUser(int points) {
+        DatabaseProxy databaseProxy = new DatabaseProxy();
+        User loggedUser = mainController.getLoggedUser();
+        loggedUser.setPoints(loggedUser.getPoints() + points);
+        databaseProxy.updateUser(loggedUser);
+    }
+
     public void runFromSnapshot(JFrame appFrame, MainController mainController) {
+        this.databaseProxy = new DatabaseProxy();
         this.appFrame = appFrame;
         this.mainController = mainController;
         quizView = new QuizView(this);
+
         if(quizSessionSnapshot != null) {
             quizSessionSnapshot.restore(this.quizSession);
+            printNextQuestion();
         } else {
             quizView.showNoSnapshotError();
             invalidateQuizSession();

@@ -5,12 +5,11 @@ import pl.ztplingo.view.StartView;
 import javax.swing.*;
 
 public class StartController {
-    private LoginRegisterController loginRegisterController;
+    private final LoginRegisterController loginRegisterController = new LoginRegisterController();;
     private StartView startView;
     private JFrame appFrame;
 
     public void run(JFrame appFrame) {
-        loginRegisterController = new LoginRegisterController();
         this.appFrame = appFrame;
         startView = new StartView(this);
         appFrame.getContentPane().add(startView);

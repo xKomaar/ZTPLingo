@@ -66,6 +66,10 @@ public class QuizSession {
         }
     }
 
+    public PhraseDecorator getCurrentPhrase() {
+        return currentPhrase;
+    }
+
     public List<String> getShuffledAnswer() {
         currentPhrase.shuffle(language);
         return currentPhrase.getShuffledAnswer();
@@ -75,11 +79,17 @@ public class QuizSession {
         return difficulty;
     }
 
+    public int getCurrentPoints() {
+        return currentPoints;
+    }
+
     public QuizSessionSnapshot createSnapshot() {
         return new QuizSessionSnapshot(questionListIterator, exerciseState,
                 language, difficulty, currentPoints, finished, currentPhrase);
     }
 
+
+    
     public void setQuestionListIterator(QuestionListIterator questionListIterator) {
         this.questionListIterator = questionListIterator;
     }

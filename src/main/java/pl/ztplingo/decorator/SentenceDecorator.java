@@ -29,7 +29,7 @@ public class SentenceDecorator extends PhraseDecorator {
         ArrayList<String> result = new ArrayList<>();
         for(i=0; i<sentence.length(); i++) {
             if(sentence.charAt(i) == ' ') {
-                result.add(sentence.substring(j,i+1));
+                result.add(sentence.substring(j,i));
                 j=i+1;
             }
         }

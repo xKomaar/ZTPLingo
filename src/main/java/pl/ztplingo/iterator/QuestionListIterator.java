@@ -23,7 +23,6 @@ public class QuestionListIterator implements Iterator<PhraseDecorator> {
         if(!hasNext()) {
             return null;
         }
-        currentIndex++;
-        return questionList.getPhraseDecoratorList().get(currentIndex);
+        return questionList.getPhraseDecoratorList().get(currentIndex++);
     }
 }

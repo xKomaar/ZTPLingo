@@ -17,14 +17,14 @@ public class QuestionList {
     public QuestionList(List<Word> words, List<Sentence> sentences, int questionQuantity) {
         phraseDecoratorList = new ArrayList<>();
         Random random = new Random();
-        for(int i=0; i<questionQuantity/2 || i<words.size(); i++) {
+        for(int i=0; i<questionQuantity/2 && !words.isEmpty(); i++) {
             int randomIndex = random.nextInt(words.size());
             Word randomWord = words.get(randomIndex);
             WordDecorator wordDecorator = new WordDecorator(randomWord);
             phraseDecoratorList.add(wordDecorator);
             words.remove(randomWord);
         }
-        for(int i=questionQuantity/2; i<questionQuantity || i<sentences.size(); i++) {
+        for(int i=questionQuantity/2; i<questionQuantity && !sentences.isEmpty(); i++) {
             int randomIndex = random.nextInt(sentences.size());
             Sentence randomSentence = sentences.get(randomIndex);
             SentenceDecorator sentenceDecorator = new SentenceDecorator(randomSentence);
