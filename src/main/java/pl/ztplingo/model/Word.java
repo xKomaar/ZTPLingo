@@ -28,7 +28,7 @@ public class Word implements Phrase {
     private ArrayList<String> shuffledAnswer;
 
 
-    public Word(String polish, String english) {
+    public Word(String english, String polish) {
         this.polish = polish;
         this.english = english;
         this.shuffledAnswer = null;

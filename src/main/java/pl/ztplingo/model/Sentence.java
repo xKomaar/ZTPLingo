@@ -26,7 +26,7 @@ public class Sentence implements Phrase {
     @Transient
     private ArrayList<String> shuffledAnswer;
 
-    public Sentence(String polish, String english) {
+    public Sentence(String english, String polish) {
         this.polish = polish;
         this.english = english;
     }

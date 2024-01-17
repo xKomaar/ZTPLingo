@@ -107,6 +107,8 @@ public class QuizView extends JPanel {
             questionQuantity = (Integer)spinner.getValue();
 
             quizController.initQuizSession(language, difficulty, questionQuantity);
+        } else {
+            quizController.invalidateQuizSession();
         }
     }
 

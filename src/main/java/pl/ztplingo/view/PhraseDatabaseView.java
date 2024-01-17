@@ -69,6 +69,7 @@ public class PhraseDatabaseView extends JPanel {
         JPanel inputPanel = new JPanel();
         inputPanel.setBorder(new EmptyBorder(20, 10, 20, 10));
         inputPanel.setBackground(orange);
+
         JLabel polish = new JLabel("Polski:");
         polish.setFont(new Font("Monospaced", Font.BOLD, 18));
         inputPanel.add(polish);

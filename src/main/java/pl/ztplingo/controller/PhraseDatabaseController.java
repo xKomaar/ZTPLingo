@@ -64,7 +64,7 @@ public class PhraseDatabaseController {
         List<Word> words = databaseProxy.getWordsByUser(mainController.getLoggedUser());
         List<String> wordsToString = new ArrayList<>();
         for(Word word : words) {
-            wordsToString.add(word.getEnglish() + " | " + word.getPolish());
+            wordsToString.add(word.getPolish() + " | " + word.getEnglish());
         }
         return wordsToString;
     }
