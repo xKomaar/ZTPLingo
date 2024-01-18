@@ -9,17 +9,13 @@ public class KeyboardInputStrategy implements AnswerInputStrategy {
 
     private JTextField answerInput;
 
-    public KeyboardInputStrategy() {
-        answerInput = new JTextField(40);
-    }
-
     @Override
     public void printQuestionAndAnswerInput(JLabel questionLabel, JPanel panel, GridBagConstraints gbc, QuizSession quizSession) {
 
         questionLabel.setText(quizSession.getCurrentQuestion());
 
         gbc.gridy=1;
-        JTextField answerInput = new JTextField(40);
+        answerInput = new JTextField(40);
         answerInput.setPreferredSize(new Dimension(0, 40));
         answerInput.setFont(new Font("Monospaced", Font.PLAIN, 16));
         answerInput.setBackground(Color.WHITE);
@@ -33,5 +29,10 @@ public class KeyboardInputStrategy implements AnswerInputStrategy {
     @Override
     public String getInputedAnswer() {
         return answerInput.getText();
+    }
+
+    @Override
+    public void clean() {
+        answerInput.setText("");
     }
 }

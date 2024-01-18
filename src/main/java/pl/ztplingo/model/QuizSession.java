@@ -39,6 +39,8 @@ public class QuizSession {
     }
 
     public boolean checkAnswer(String answer) {
+        System.out.println(answer);
+        System.out.println(getCurrentAnswer());
         if (answer.equalsIgnoreCase(getCurrentAnswer())) {
             currentPoints++;
             return true;

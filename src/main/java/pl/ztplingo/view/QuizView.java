@@ -46,7 +46,11 @@ public class QuizView extends JPanel {
         submitButton.setFont(setFont(Font.BOLD, 18));
         submitButton.setForeground(Color.white);
         submitButton.setBackground(Color.BLUE);
-        submitButton.addActionListener(e -> quizController.checkAnswerAndGoNext(answerInputStrategy.getInputedAnswer()));
+        submitButton.addActionListener(e -> {
+            String answer = answerInputStrategy.getInputedAnswer();
+            answerInputStrategy.clean();
+            quizController.checkAnswerAndGoNext(answer);
+        });
         quizPanel.add(submitButton, gbc);
 
         gbc.gridy=5;

@@ -15,16 +15,19 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
     private List<String> words;
     private JPanel wordsPanel;
     private List<JButton> wordButtons;
-    private Stack<String> selectedWords;
+    private Stack<JButton> selectedButtons;
     private JTextField answerInput;
     private JButton backButton;
+    private JPanel quizPanel;
 
     @Override
     public void printQuestionAndAnswerInput(JLabel questionLabel, JPanel panel, GridBagConstraints gbc, QuizSession quizSession) {
 
+        this.quizPanel = panel;
+
         questionLabel.setText(quizSession.getCurrentQuestion());
 
-        selectedWords = new Stack<>();
+        selectedButtons = new Stack<>();
 
         words = quizSession.getShuffledAnswer();
 
@@ -33,12 +36,11 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
         wordsPanel = new JPanel();
         wordsPanel.setLayout(new FlowLayout());
         wordsPanel.setBackground(new Color(0, 0, 0,0));
-        panel.add(wordsPanel, gbc);
+        quizPanel.add(wordsPanel, gbc);
 
-        wordsPanel.removeAll();
         for (String word : words) {
             JButton button = new JButton(word);
-            button.addActionListener(new SentenceByWordInputStrategy.WordButtonListener());
+            button.addActionListener(new WordButtonListener());
             wordButtons.add(button);
             wordsPanel.add(button);
         }
@@ -50,7 +52,7 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
         answerInput.setBackground(Color.WHITE);
         answerInput.setHorizontalAlignment(SwingConstants.CENTER);
         answerInput.setEditable(false);
-        panel.add(answerInput, gbc);
+        quizPanel.add(answerInput, gbc);
 
 
         gbc.gridy=3;
@@ -59,10 +61,10 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
         backButton.setForeground(Color.white);
         backButton.setBackground(Color.RED);
         backButton.addActionListener(new SentenceByWordInputStrategy.BackButtonListener());
-        panel.add(backButton, gbc);
+        quizPanel.add(backButton, gbc);
 
-        panel.revalidate();
-        panel.repaint();
+        quizPanel.revalidate();
+        quizPanel.repaint();
     }
 
     @Override
@@ -82,31 +84,37 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
             }
 
             button.setEnabled(false);
-            selectedWords.push(selectedWord);
+            selectedButtons.push(button);
         }
     }
 
     private class BackButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!selectedWords.isEmpty()) {
-                String lastSelectedWord = selectedWords.pop();
+            if (!selectedButtons.isEmpty()) {
+                JButton lastSelectedButton = selectedButtons.pop();
                 String currentText = answerInput.getText();
-                int lastIndexOf = currentText.lastIndexOf(" " + lastSelectedWord);
-
+                int lastIndexOf = currentText.lastIndexOf(" " + lastSelectedButton.getText());
                 if (lastIndexOf != -1) {
                     answerInput.setText(currentText.substring(0, lastIndexOf));
-                    enableButton(lastSelectedWord);
+                    lastSelectedButton.setEnabled(true);
                 }
             }
         }
-        private void enableButton(String word) {
+        private void enableAllButtons() {
             for (JButton button : wordButtons) {
-                if (button.getText().equals(word)) {
-                    button.setEnabled(true);
-                    break;
-                }
+                button.setEnabled(true);
+                break;
             }
         }
+    }
+
+    @Override
+    public void clean() {
+        answerInput.setText("");
+        wordsPanel.removeAll();
+        quizPanel.remove(backButton);
+        quizPanel.revalidate();
+        quizPanel.repaint();
     }
 }

@@ -9,4 +9,5 @@ import java.awt.*;
 public interface AnswerInputStrategy {
     void printQuestionAndAnswerInput(JLabel questionLabel, JPanel panel, GridBagConstraints gbc, QuizSession quizSession);
     String getInputedAnswer();
+    void clean();
 }
