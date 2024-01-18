@@ -38,6 +38,11 @@ public class WordDecorator extends PhraseDecorator {
         if(j != word.length()) {
             result.set(result.size()-1, result.get(result.size()-1) + word.substring(j));
         }
+        if(result.size() == 1) {
+            result.remove(0);
+            result.add(word.substring(0,word.length()/2));
+            result.add(word.substring(word.length()/2));
+        }
         return result;
     }
 
