@@ -94,9 +94,14 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
             if (!selectedButtons.isEmpty()) {
                 JButton lastSelectedButton = selectedButtons.pop();
                 String currentText = answerInput.getText();
-                int lastIndexOf = currentText.lastIndexOf(" " + lastSelectedButton.getText());
-                if (lastIndexOf != -1) {
-                    answerInput.setText(currentText.substring(0, lastIndexOf));
+                int lastIndex;
+                if(selectedButtons.size() > 1) {
+                    lastIndex = currentText.lastIndexOf(" " + lastSelectedButton.getText());
+                } else {
+                    lastIndex = currentText.lastIndexOf(lastSelectedButton.getText());
+                }
+                if (lastIndex != -1) {
+                    answerInput.setText(currentText.substring(0, lastIndex));
                     lastSelectedButton.setEnabled(true);
                 }
             }
@@ -111,9 +116,9 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
 
     @Override
     public void clean() {
-        answerInput.setText("");
         wordsPanel.removeAll();
         quizPanel.remove(backButton);
+        quizPanel.remove(answerInput);
         quizPanel.revalidate();
         quizPanel.repaint();
     }

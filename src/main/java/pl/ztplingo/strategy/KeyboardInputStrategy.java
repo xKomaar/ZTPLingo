@@ -8,9 +8,12 @@ import java.awt.*;
 public class KeyboardInputStrategy implements AnswerInputStrategy {
 
     private JTextField answerInput;
+    private JPanel quizPanel;
 
     @Override
     public void printQuestionAndAnswerInput(JLabel questionLabel, JPanel panel, GridBagConstraints gbc, QuizSession quizSession) {
+
+        this.quizPanel = panel;
 
         questionLabel.setText(quizSession.getCurrentQuestion());
 
@@ -20,10 +23,10 @@ public class KeyboardInputStrategy implements AnswerInputStrategy {
         answerInput.setFont(new Font("Monospaced", Font.PLAIN, 16));
         answerInput.setBackground(Color.WHITE);
         answerInput.setHorizontalAlignment(SwingConstants.CENTER);
-        panel.add(answerInput, gbc);
+        quizPanel.add(answerInput, gbc);
 
-        panel.revalidate();
-        panel.repaint();
+        quizPanel.revalidate();
+        quizPanel.repaint();
     }
 
     @Override
@@ -33,6 +36,8 @@ public class KeyboardInputStrategy implements AnswerInputStrategy {
 
     @Override
     public void clean() {
-        answerInput.setText("");
+        quizPanel.remove(answerInput);
+        quizPanel.revalidate();
+        quizPanel.repaint();
     }
 }

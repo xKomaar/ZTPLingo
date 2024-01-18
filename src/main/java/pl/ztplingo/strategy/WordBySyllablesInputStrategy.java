@@ -100,8 +100,8 @@ public class WordBySyllablesInputStrategy implements AnswerInputStrategy {
 
     @Override
     public void clean() {
-        answerInput.setText("");
         syllablesPanel.removeAll();
+        quizPanel.remove(answerInput);
         quizPanel.remove(backButton);
         quizPanel.revalidate();
         quizPanel.repaint();
