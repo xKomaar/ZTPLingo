@@ -18,6 +18,7 @@ public class QuizSession {
     private int currentPoints;
     private boolean finished;
     private PhraseDecorator currentPhrase;
+    private int questionQuantity;
 
     public QuizSession(LanguageState language, Difficulty difficulty, QuestionList questionList) {
         this.questionListIterator = questionList.createQuestionListIterator();
@@ -25,11 +26,17 @@ public class QuizSession {
         this.difficulty = difficulty;
         this.finished = false;
         this.currentPoints = 0;
+        this.questionQuantity = 0;
     }
 
     public void loadNextPhrase() {
-        currentPhrase = questionListIterator.next();
-        if(!questionListIterator.hasNext()) {
+        if(questionListIterator.hasNext()) {
+            currentPhrase = questionListIterator.next();
+            if(!questionListIterator.hasNext()) {
+                finished = true;
+            }
+            questionQuantity++;
+        } else {
             finished = true;
         }
     }
@@ -77,6 +84,10 @@ public class QuizSession {
 
     public int getCurrentPoints() {
         return currentPoints;
+    }
+
+    public int getQuestionQuantity() {
+        return questionQuantity;
     }
 
     public QuizSessionSnapshot createSnapshot() {

@@ -83,6 +83,7 @@ public class QuizController {
         } else {
             addPointsToLoggedUser(quizSession.getCurrentPoints());
             invalidateQuizSession();
+            quizView.showTestFinishedPopup(quizSession.getCurrentPoints(), quizSession.getQuestionQuantity());
         }
     }
 

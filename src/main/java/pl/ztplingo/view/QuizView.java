@@ -124,6 +124,10 @@ public class QuizView extends JPanel {
         JOptionPane.showMessageDialog(this, "Aby zapisać jakąś sesję użyj przysisku \"Przerwij sesję\" podczas jej wykonywania", "Brak Zapisanej Sesji", JOptionPane.ERROR_MESSAGE);
     }
 
+    public void showTestFinishedPopup(int correctAnswers, int questionQuantity) {
+        JOptionPane.showMessageDialog(this, "Uzyskany wynik: " + correctAnswers + "/" + questionQuantity, "Zakończyłeś test", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private Font setFont(int style, int size) {
         return new Font("Monospaced", style, size);
     }
