@@ -95,7 +95,8 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
                 JButton lastSelectedButton = selectedButtons.pop();
                 String currentText = answerInput.getText();
                 int lastIndex;
-                if(selectedButtons.size() > 1) {
+                //powinno byc > 1 ale popujemy ze stosu wiec o 1 mniej
+                if(selectedButtons.size() > 0) {
                     lastIndex = currentText.lastIndexOf(" " + lastSelectedButton.getText());
                 } else {
                     lastIndex = currentText.lastIndexOf(lastSelectedButton.getText());
@@ -104,12 +105,6 @@ public class SentenceByWordInputStrategy implements AnswerInputStrategy {
                     answerInput.setText(currentText.substring(0, lastIndex));
                     lastSelectedButton.setEnabled(true);
                 }
-            }
-        }
-        private void enableAllButtons() {
-            for (JButton button : wordButtons) {
-                button.setEnabled(true);
-                break;
             }
         }
     }
