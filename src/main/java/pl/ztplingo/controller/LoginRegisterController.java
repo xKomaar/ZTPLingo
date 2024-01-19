@@ -1,6 +1,6 @@
 package pl.ztplingo.controller;
 
-import pl.ztplingo.PasswordEncoder;
+import pl.ztplingo.model.PasswordEncoder;
 import pl.ztplingo.database.DatabaseProxy;
 import pl.ztplingo.model.User;
 import pl.ztplingo.view.LoginRegisterView;
@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class LoginRegisterController {
     private LoginRegisterView loginRegisterView;
-    private final MainController mainController = new MainController();
+    private final MenuController menuController = new MenuController();
     private DatabaseProxy databaseProxy;
     private JFrame appFrame;
 
@@ -28,8 +28,8 @@ public class LoginRegisterController {
         if(user != null) {
             if(user.getPassword().equals(encodedPassword)) {
                 appFrame.getContentPane().removeAll();
-                mainController.setLoggedUser(user);
-                mainController.run(appFrame);
+                menuController.setLoggedUser(user);
+                menuController.run(appFrame);
             } else {
                 loginRegisterView.showIncorrectPasswordError();
             }

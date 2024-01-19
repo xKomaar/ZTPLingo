@@ -1,7 +1,8 @@
 package pl.ztplingo.view;
 
-import pl.ztplingo.Difficulty;
-import pl.ztplingo.LanguageState;
+import pl.ztplingo.settings.Difficulty;
+import pl.ztplingo.settings.ExerciseMode;
+import pl.ztplingo.settings.Language;
 import pl.ztplingo.controller.QuizController;
 import pl.ztplingo.model.QuizSession;
 import pl.ztplingo.strategy.AnswerInputStrategy;
@@ -72,7 +73,7 @@ public class QuizView extends JPanel {
         add(quizPanel, BorderLayout.CENTER);
     }
 
-    public void showSettingsPopup() {
+    public void showSettingsPopup(ExerciseMode exerciseMode) {
         JPanel panel = new JPanel(new GridLayout(4, 1));
         String[] difficulties = {"Łatwy", "Trudny"};
         JComboBox<String> difficultyComboBox = new JComboBox<>(difficulties);
@@ -93,7 +94,7 @@ public class QuizView extends JPanel {
 
         if (result == JOptionPane.OK_OPTION) {
             Difficulty difficulty;
-            LanguageState language;
+            Language language;
             int questionQuantity;
 
             if(Objects.equals((String) difficultyComboBox.getSelectedItem(), "Łatwy")) {
@@ -103,14 +104,14 @@ public class QuizView extends JPanel {
             }
 
             if(Objects.equals((String) languageComboBox.getSelectedItem(), "Polski -> Angielski")) {
-                language = LanguageState.POLISH_TO_ENGLISH;
+                language = Language.POLISH_TO_ENGLISH;
             } else {
-                language = LanguageState.ENGLISH_TO_POLISH;
+                language = Language.ENGLISH_TO_POLISH;
             }
 
             questionQuantity = (Integer)spinner.getValue();
 
-            quizController.initQuizSession(language, difficulty, questionQuantity);
+            quizController.initQuizSession(language, difficulty, exerciseMode, questionQuantity);
         } else {
             quizController.invalidateQuizSession();
         }
@@ -122,6 +123,22 @@ public class QuizView extends JPanel {
 
     public void showNoSnapshotError() {
         JOptionPane.showMessageDialog(this, "Aby zapisać jakąś sesję użyj przysisku \"Przerwij sesję\" podczas jej wykonywania", "Brak Zapisanej Sesji", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showIncorrectAnswerTryAgainPopup() {
+        JOptionPane.showMessageDialog(this, "Spróbuj jeszcze raz!", "Nieprawidłowa odpowiedź", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showIncorrectAnswerPopup() {
+        JOptionPane.showMessageDialog(this, "Niepoprawnie odpowiedziałeś na pytanie!", "Nieprawidłowa odpowiedź", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showCorrectAnswerPopup() {
+        JOptionPane.showMessageDialog(this, "Poprawnie odpowiedziałeś na pytanie!", "Prawidłowa odpowiedź", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showLearningSessionFinishedPopup() {
+        JOptionPane.showMessageDialog(this, "Zakończono Sesję Nauki!", "Koniec", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void showTestFinishedPopup(int correctAnswers, int questionQuantity) {

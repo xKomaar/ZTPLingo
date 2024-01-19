@@ -1,13 +1,13 @@
 package pl.ztplingo.controller;
 
-import pl.ztplingo.database.DatabaseProxy;
 import pl.ztplingo.model.User;
-import pl.ztplingo.view.MainView;
+import pl.ztplingo.settings.ExerciseMode;
+import pl.ztplingo.view.MenuView;
 
 import javax.swing.*;
 
-public class MainController {
-    private MainView mainView;
+public class MenuController {
+    private MenuView menuView;
     private final QuizController quizController = new QuizController();
     private PhraseDatabaseController phraseDatabaseController;
 
@@ -16,9 +16,9 @@ public class MainController {
 
     public void run(JFrame appFrame) {
         this.appFrame = appFrame;
-        mainView = new MainView(this);
+        menuView = new MenuView(this);
         phraseDatabaseController = new PhraseDatabaseController();
-        appFrame.getContentPane().add(mainView);
+        appFrame.getContentPane().add(menuView);
         appFrame.getContentPane().revalidate();
         appFrame.getContentPane().repaint();
     }
@@ -36,9 +36,9 @@ public class MainController {
         phraseDatabaseController.run(appFrame, this);
     }
 
-    public void redirectToQuizController() {
+    public void redirectToQuizController(ExerciseMode exerciseMode) {
         appFrame.getContentPane().removeAll();
-        quizController.run(appFrame, this);
+        quizController.run(appFrame, this, exerciseMode);
     }
 
     public void redirectToQuizControllerWithSnapshot() {

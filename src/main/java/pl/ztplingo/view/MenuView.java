@@ -1,17 +1,16 @@
 package pl.ztplingo.view;
 
-import pl.ztplingo.Difficulty;
-import pl.ztplingo.LanguageState;
-import pl.ztplingo.controller.MainController;
+import pl.ztplingo.controller.MenuController;
+import pl.ztplingo.settings.ExerciseMode;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MainView extends JPanel {
+public class MenuView extends JPanel {
     private JPanel menuPanel;
-    private MainController mainController;
+    private MenuController menuController;
     private String username;
     private Integer points;
     private JButton testButton;
@@ -23,10 +22,10 @@ public class MainView extends JPanel {
     private Color orange;
     private Font buttonFont;
 
-    public MainView(MainController mainController) {
-        this.mainController = mainController;
-        username = mainController.getLoggedUser().getUsername();
-        points = mainController.getLoggedUser().getPoints();
+    public MenuView(MenuController menuController) {
+        this.menuController = menuController;
+        username = menuController.getLoggedUser().getUsername();
+        points = menuController.getLoggedUser().getPoints();
         setLayout(new BorderLayout());
         setVisible(true);
         backgroundImage = new ImageIcon(getClass().getClassLoader().getResource("main.jpg")).getImage();
@@ -52,22 +51,22 @@ public class MainView extends JPanel {
         buttonPanel.setBackground(new Color(0, 0, 0, 0));
 
         testButton = new JButton("WYKONAJ TEST");
-        testButton.addActionListener(e -> mainController.redirectToQuizController());
+        testButton.addActionListener(e -> menuController.redirectToQuizController(ExerciseMode.TEST));
         createButtonStyle(testButton);
         buttonPanel.add(testButton);
 
-        sessionButton = new JButton("ZRÓB SESJE NAUKI");
-        sessionButton.addActionListener(e -> mainController.redirectToQuizController());
+        sessionButton = new JButton("SESJA NAUKI");
+        sessionButton.addActionListener(e -> menuController.redirectToQuizController(ExerciseMode.LEARNING));
         createButtonStyle(sessionButton);
         buttonPanel.add(sessionButton);
 
         phrasesButton = new JButton("BAZA FRAZ");
-        phrasesButton.addActionListener(e -> mainController.redirectToPhraseDatabaseController());
+        phrasesButton.addActionListener(e -> menuController.redirectToPhraseDatabaseController());
         createButtonStyle(phrasesButton);
         buttonPanel.add(phrasesButton);
 
         continueButton = new JButton("OSTATNIA PRZERWANA");
-        continueButton.addActionListener(e -> mainController.redirectToQuizControllerWithSnapshot());
+        continueButton.addActionListener(e -> menuController.redirectToQuizControllerWithSnapshot());
         createButtonStyle(continueButton);
         buttonPanel.add(continueButton);
 

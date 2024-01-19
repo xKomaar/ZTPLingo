@@ -1,4 +1,4 @@
-package pl.ztplingo;
+package pl.ztplingo.model;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

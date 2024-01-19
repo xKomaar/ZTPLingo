@@ -1,4 +1,4 @@
-package pl.ztplingo;
+package pl.ztplingo.settings;
 
 public enum Difficulty {
     EASY,

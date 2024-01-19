@@ -1,6 +1,6 @@
 package pl.ztplingo.decorator;
 
-import pl.ztplingo.LanguageState;
+import pl.ztplingo.settings.Language;
 import pl.ztplingo.model.Word;
 
 import java.util.ArrayList;
@@ -12,10 +12,10 @@ public class WordDecorator extends PhraseDecorator {
         this.setWrappedPhrase(word);
     }
 
-    public void shuffle(LanguageState language) {
+    public void shuffle(Language language) {
         this.getWrappedPhrase().shuffle(language);
         ArrayList<String> shuffled = this.getWrappedPhrase().getShuffledAnswer();
-        if(language == LanguageState.ENGLISH_TO_POLISH) {
+        if(language == Language.ENGLISH_TO_POLISH) {
             shuffled = divideIntoSyllables(getPolish());
         } else {
             shuffled = divideIntoSyllables(getEnglish());

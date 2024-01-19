@@ -1,9 +1,9 @@
 package pl.ztplingo.model;
 
-import pl.ztplingo.Difficulty;
-import pl.ztplingo.LanguageState;
+import pl.ztplingo.settings.Difficulty;
+import pl.ztplingo.settings.ExerciseMode;
+import pl.ztplingo.settings.Language;
 import pl.ztplingo.decorator.PhraseDecorator;
-import pl.ztplingo.exerciseState.ExerciseState;
 import pl.ztplingo.iterator.QuestionListIterator;
 import pl.ztplingo.snapshot.QuizSessionSnapshot;
 
@@ -12,18 +12,19 @@ import java.util.List;
 public class QuizSession {
 
     private QuestionListIterator questionListIterator;
-    private ExerciseState exerciseState;
-    private LanguageState language;
+    private ExerciseMode exerciseMode;
+    private Language language;
     private Difficulty difficulty;
     private int currentPoints;
     private boolean finished;
     private PhraseDecorator currentPhrase;
     private int questionQuantity;
 
-    public QuizSession(LanguageState language, Difficulty difficulty, QuestionList questionList) {
+    public QuizSession(Language language, Difficulty difficulty, QuestionList questionList, ExerciseMode exerciseMode) {
         this.questionListIterator = questionList.createQuestionListIterator();
         this.language = language;
         this.difficulty = difficulty;
+        this.exerciseMode = exerciseMode;
         this.finished = false;
         this.currentPoints = 0;
         this.questionQuantity = 0;
@@ -54,7 +55,7 @@ public class QuizSession {
     }
 
     public String getCurrentQuestion() {
-        if(language == LanguageState.ENGLISH_TO_POLISH) {
+        if(language == Language.ENGLISH_TO_POLISH) {
             return currentPhrase.getEnglish();
         } else {
             return currentPhrase.getPolish();
@@ -62,7 +63,7 @@ public class QuizSession {
     }
 
     public String getCurrentAnswer() {
-        if(language == LanguageState.ENGLISH_TO_POLISH) {
+        if(language == Language.ENGLISH_TO_POLISH) {
             return currentPhrase.getPolish();
         } else {
             return currentPhrase.getEnglish();
@@ -90,22 +91,26 @@ public class QuizSession {
         return questionQuantity;
     }
 
+    public ExerciseMode getExerciseMode() {
+        return exerciseMode;
+    }
+
     public QuizSessionSnapshot createSnapshot() {
-        return new QuizSessionSnapshot(questionListIterator, exerciseState,
+        return new QuizSessionSnapshot(questionListIterator, exerciseMode,
                 language, difficulty, currentPoints, finished, currentPhrase);
     }
 
 
-    
+
     public void setQuestionListIterator(QuestionListIterator questionListIterator) {
         this.questionListIterator = questionListIterator;
     }
 
-    public void setExerciseState(ExerciseState exerciseState) {
-        this.exerciseState = exerciseState;
+    public void setExerciseMode(ExerciseMode exerciseMode) {
+        this.exerciseMode = exerciseMode;
     }
 
-    public void setLanguage(LanguageState language) {
+    public void setLanguage(Language language) {
         this.language = language;
     }
 

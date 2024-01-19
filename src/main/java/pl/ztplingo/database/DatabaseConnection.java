@@ -140,7 +140,7 @@ public class DatabaseConnection implements Database {
         try {
             session = sessionFactory.openSession();
 
-            Query query = session.createQuery("FROM Word W WHERE W.user = :user");
+            Query query = session.createQuery("FROM Word W WHERE W.user = :user ORDER BY W.polish ASC");
             query.setParameter("user", user);
             words = query.list();
         } catch (Exception e){
@@ -158,7 +158,7 @@ public class DatabaseConnection implements Database {
         try {
             session = sessionFactory.openSession();
 
-            Query query = session.createQuery("FROM Sentence S WHERE S.user = :user");
+            Query query = session.createQuery("FROM Sentence S WHERE S.user = :user ORDER BY S.polish ASC");
             query.setParameter("user", user);
             sentences = query.list();
         } catch (Exception e){

@@ -1,7 +1,8 @@
 package pl.ztplingo.controller;
 
-import pl.ztplingo.Difficulty;
-import pl.ztplingo.LanguageState;
+import pl.ztplingo.settings.Difficulty;
+import pl.ztplingo.settings.ExerciseMode;
+import pl.ztplingo.settings.Language;
 import pl.ztplingo.database.DatabaseProxy;
 import pl.ztplingo.model.QuestionList;
 import pl.ztplingo.model.QuizSession;
@@ -17,24 +18,27 @@ import javax.swing.*;
 
 public class QuizController {
     private QuizView quizView;
-    private MainController mainController;
+    private MenuController menuController;
     private JFrame appFrame;
     private QuizSession quizSession;
     private QuizSessionSnapshot quizSessionSnapshot;
     private DatabaseProxy databaseProxy;
+    private boolean ranFromSnaphot;
 
-    public void run(JFrame appFrame, MainController mainController) {
+    public void run(JFrame appFrame, MenuController menuController, ExerciseMode exerciseMode) {
         this.databaseProxy = new DatabaseProxy();
         this.appFrame = appFrame;
-        this.mainController = mainController;
+        this.menuController = menuController;
+        this.ranFromSnaphot = false;
         quizView = new QuizView(this);
-        quizView.showSettingsPopup();
+        quizView.showSettingsPopup(exerciseMode);
     }
 
-    public void runFromSnapshot(JFrame appFrame, MainController mainController) {
+    public void runFromSnapshot(JFrame appFrame, MenuController menuController) {
         this.databaseProxy = new DatabaseProxy();
         this.appFrame = appFrame;
-        this.mainController = mainController;
+        this.menuController = menuController;
+        this.ranFromSnaphot = true;
         quizView = new QuizView(this);
 
         if(quizSessionSnapshot != null) {
@@ -50,15 +54,15 @@ public class QuizController {
         }
     }
 
-    public void initQuizSession(LanguageState language, Difficulty difficulty, int questionQuantity) {
-        int userPhraseQuantity = databaseProxy.getWordsByUser(mainController.getLoggedUser()).size() +
-                databaseProxy.getSentencesByUser(mainController.getLoggedUser()).size();
+    public void initQuizSession(Language language, Difficulty difficulty, ExerciseMode exerciseMode, int questionQuantity) {
+        int userPhraseQuantity = databaseProxy.getWordsByUser(menuController.getLoggedUser()).size() +
+                databaseProxy.getSentencesByUser(menuController.getLoggedUser()).size();
         if(questionQuantity > userPhraseQuantity) {
             quizView.showQuestionQuantityError();
             appFrame.getContentPane().removeAll();
-            mainController.run(appFrame);
+            menuController.run(appFrame);
         } else {
-            this.quizSession = new QuizSession(language, difficulty, generateQuestionList(questionQuantity));
+            this.quizSession = new QuizSession(language, difficulty, generateQuestionList(questionQuantity), exerciseMode);
             appFrame.getContentPane().add(quizView);
             appFrame.getContentPane().revalidate();
             appFrame.getContentPane().repaint();
@@ -67,12 +71,11 @@ public class QuizController {
     }
 
     public QuestionList generateQuestionList(int quantity) {
-        return new QuestionList(databaseProxy.getWordsByUser(mainController.getLoggedUser()),
-                databaseProxy.getSentencesByUser(mainController.getLoggedUser()), quantity);
+        return new QuestionList(databaseProxy.getWordsByUser(menuController.getLoggedUser()),
+                databaseProxy.getSentencesByUser(menuController.getLoggedUser()), quantity);
     }
 
     public void printNextQuestion() {
-
         if(!quizSession.isFinished()) {
             quizSession.loadNextPhrase();
 
@@ -81,32 +84,52 @@ public class QuizController {
             quizView.printQuestionAndAnswerInput(quizSession);
 
         } else {
-            addPointsToLoggedUser(quizSession.getCurrentPoints());
-            invalidateQuizSession();
-            quizView.showTestFinishedPopup(quizSession.getCurrentPoints(), quizSession.getQuestionQuantity());
+            if(ranFromSnaphot) {
+                quizSessionSnapshot = null;
+                ranFromSnaphot = false;
+            }
+            if(quizSession.getExerciseMode() == ExerciseMode.TEST) {
+                addPointsToLoggedUser(quizSession.getCurrentPoints());
+                invalidateQuizSession();
+                quizView.showTestFinishedPopup(quizSession.getCurrentPoints(), quizSession.getQuestionQuantity());
+            } else {
+                invalidateQuizSession();
+                quizView.showLearningSessionFinishedPopup();
+            }
         }
     }
 
     public void checkAnswerAndGoNext(String answer) {
-        quizSession.checkAnswer(answer);
-        printNextQuestion();
+        boolean isCorrect = quizSession.checkAnswer(answer);
+        if(isCorrect) {
+            printNextQuestion();
+            quizView.showCorrectAnswerPopup();
+        } else {
+            if(quizSession.getExerciseMode() == ExerciseMode.TEST) {
+                printNextQuestion();
+                quizView.showIncorrectAnswerPopup();
+            } else {
+                quizView.printQuestionAndAnswerInput(quizSession);
+                quizView.showIncorrectAnswerTryAgainPopup();
+            }
+        }
     }
 
     public void invalidateQuizSessionWithSnapshot() {
         quizSessionSnapshot = quizSession.createSnapshot();
 
         appFrame.getContentPane().removeAll();
-        mainController.run(appFrame);
+        menuController.run(appFrame);
     }
 
     public void invalidateQuizSession() {
         appFrame.getContentPane().removeAll();
-        mainController.run(appFrame);
+        menuController.run(appFrame);
     }
 
     private void addPointsToLoggedUser(int points) {
         DatabaseProxy databaseProxy = new DatabaseProxy();
-        User loggedUser = mainController.getLoggedUser();
+        User loggedUser = menuController.getLoggedUser();
         loggedUser.setPoints(loggedUser.getPoints() + points);
         databaseProxy.updateUser(loggedUser);
     }
