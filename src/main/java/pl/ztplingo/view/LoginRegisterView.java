@@ -118,7 +118,7 @@ public class LoginRegisterView extends JPanel {
         String confirmPassword = new String(confirmPasswordChars);
 
         if (!password.equals(confirmPassword)) {
-            JOptionPane.showMessageDialog(this, "Hasła się różnią", "Błąd rejestracji", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Hasła się różnią!", "Błąd rejestracji", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -135,13 +135,28 @@ public class LoginRegisterView extends JPanel {
 
     public void switchForm() {
         isLoginForm = !isLoginForm;
-        System.out.println(isLoginForm);
         switchLabel.setText(isLoginForm ? "Nie masz jeszcze konta? Zarejestruj się" : "Masz już konto? Zaloguj się");
         actionButton.setText(isLoginForm ? "Zaloguj" : "Zarejestruj");
         confirmPasswordLabel.setVisible(!isLoginForm);
         confirmPasswordField.setVisible(!isLoginForm);
         revalidate();
         repaint();
+    }
+
+    public void showUserAlreadyExistsError() {
+        JOptionPane.showMessageDialog(this, "Użytkownik o takiej nazwie już istnieje!", "Błąd rejestracji", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showIncorrectUsernameError() {
+        JOptionPane.showMessageDialog(this, "Niepoprawna nazwa użytkownika!", "Błąd logowania", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showIncorrectPasswordError() {
+        JOptionPane.showMessageDialog(this, "Niepoprawne hasło!", "Błąd logowania", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showUsernameTooShortError() {
+        JOptionPane.showMessageDialog(this, "Nazwa użytkownika powinna składać się z conajmniej 3 liter!", "Błąd rejestracji", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override

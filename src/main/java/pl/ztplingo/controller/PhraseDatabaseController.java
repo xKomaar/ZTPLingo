@@ -30,7 +30,12 @@ public class PhraseDatabaseController {
         if(english != null && english.length() != 0 && polish != null && polish.length() != 0) {
             Word word = new Word(english, polish);
             word.setUser(mainController.getLoggedUser());
-            databaseProxy.saveWord(word);
+            Integer result = databaseProxy.saveWord(word);
+            if(result == -1) {
+                phraseDatabaseView.showIncorrectPolishWordError();
+            } else if(result == -2) {
+                phraseDatabaseView.showIncorrectEnglishWordError();
+            }
         }
         phraseDatabaseView.updateList();
     }
@@ -39,7 +44,12 @@ public class PhraseDatabaseController {
         if(english != null && english.length() != 0 && polish != null && polish.length() != 0) {
             Sentence sentence = new Sentence(english, polish);
             sentence.setUser(mainController.getLoggedUser());
-            databaseProxy.saveSentence(sentence);
+            Integer result = databaseProxy.saveSentence(sentence);
+            if(result == -1) {
+                phraseDatabaseView.showIncorrectPolishSentenceError();
+            } else if(result == -2) {
+                phraseDatabaseView.showIncorrectEnglishSentenceError();
+            }
         }
         phraseDatabaseView.updateList();
     }
@@ -64,7 +74,7 @@ public class PhraseDatabaseController {
         List<Word> words = databaseProxy.getWordsByUser(mainController.getLoggedUser());
         List<String> wordsToString = new ArrayList<>();
         for(Word word : words) {
-            wordsToString.add(word.getPolish() + " | " + word.getEnglish());
+            wordsToString.add(word.getPolish() + " --> " + word.getEnglish());
         }
         return wordsToString;
     }
@@ -73,7 +83,7 @@ public class PhraseDatabaseController {
         List<Sentence> sentences = databaseProxy.getSentencesByUser(mainController.getLoggedUser());
         List<String> sentencesToString = new ArrayList<>();
         for(Sentence sentence : sentences) {
-            sentencesToString.add(sentence.getPolish() + " | " + sentence.getEnglish());
+            sentencesToString.add(sentence.getPolish() + " --> " + sentence.getEnglish());
         }
         return sentencesToString;
     }

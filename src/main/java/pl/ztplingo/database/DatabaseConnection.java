@@ -36,30 +36,32 @@ public class DatabaseConnection implements Database {
         return instance;
     }
 
-    private void saveEntity(Object o) {
+    private Integer saveEntity(Object o) {
         Session session = null;
+        Integer id = null;
         try {
             session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-            session.persist(o);
+            id = (Integer)session.save(o);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if(session != null) session.close();
         }
+        return id;
     }
 
-    public void saveUser(User user) {
-        saveEntity(user);
+    public Integer saveUser(User user) {
+        return saveEntity(user);
     }
 
-    public void saveWord(Word word) {
-        saveEntity(word);
+    public Integer saveWord(Word word) {
+        return saveEntity(word);
     }
 
-    public void saveSentence(Sentence sentence) {
-        saveEntity(sentence);
+    public Integer saveSentence(Sentence sentence) {
+        return saveEntity(sentence);
     }
 
     public User getUserById(Integer id)

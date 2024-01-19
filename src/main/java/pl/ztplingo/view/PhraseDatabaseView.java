@@ -146,4 +146,20 @@ public class PhraseDatabaseView extends JPanel {
         polishTextField.setText("");
         englishTextField.setText("");
     }
+
+    public void showIncorrectPolishWordError() {
+        JOptionPane.showMessageDialog(this, "Wpisz poprawne polskie słowo!", "Niepoprawne Polskie Słowo", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showIncorrectEnglishWordError() {
+        JOptionPane.showMessageDialog(this, "Wpisz poprawne angielskie słowo!", "Niepoprawne Angielskie Słowo", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showIncorrectPolishSentenceError() {
+        JOptionPane.showMessageDialog(this, "Wpisz poprawne polskie zdanie!", "Niepoprawne Polskie Zdanie", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showIncorrectEnglishSentenceError() {
+        JOptionPane.showMessageDialog(this, "Wpisz poprawne angielskie zdanie!", "Niepoprawne Angielskie Zdanie", JOptionPane.ERROR_MESSAGE);
+    }
 }

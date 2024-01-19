@@ -5,8 +5,9 @@ import pl.ztplingo.model.User;
 import pl.ztplingo.model.Word;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-//TODO: Dodac rzeczy typu w save czy user exists i sprawdzanie czy slowo jest slowem, a zdanie zdaniem
 public class DatabaseProxy implements Database {
 
     private final DatabaseConnection databaseConnection;
@@ -15,16 +16,48 @@ public class DatabaseProxy implements Database {
         this.databaseConnection = DatabaseConnection.getInstance();
     }
 
-    public void saveUser(User user) {
-        databaseConnection.saveUser(user);
+    public Integer saveUser(User user) {
+        if(user.getUsername().length() < 3) {
+            return -1;
+        }
+        User u = getUserByUsername(user.getUsername());
+        if(u == null) {
+            return databaseConnection.saveUser(user);
+        } else {
+            return -2;
+        }
     }
 
-    public void saveWord(Word word) {
-        databaseConnection.saveWord(word);
+    public Integer saveWord(Word word) {
+        Pattern pattern = Pattern.compile("[A-Za-z]+", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(word.getPolish());
+        if(!matcher.matches()) {
+            return -1;
+        }
+        matcher = pattern.matcher(word.getEnglish());
+        if(!matcher.matches()) {
+            return -2;
+        }
+        return databaseConnection.saveWord(word);
     }
     
-    public void saveSentence(Sentence sentence) {
-        databaseConnection.saveSentence(sentence);
+    public Integer saveSentence(Sentence sentence) {
+        if(!sentence.getPolish().contains(" ")) {
+            return -1;
+        }
+        if(!sentence.getEnglish().contains(" ")) {
+            return -2;
+        }
+        Pattern pattern = Pattern.compile("[A-Za-z]+\\s+,*\\.*\\?*;*!*", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(sentence.getPolish());
+        if(matcher.matches()) {
+            return -1;
+        }
+        matcher = pattern.matcher(sentence.getEnglish());
+        if(matcher.matches()) {
+            return -2;
+        }
+        return databaseConnection.saveSentence(sentence);
     }
 
     public User getUserById(Integer id) {

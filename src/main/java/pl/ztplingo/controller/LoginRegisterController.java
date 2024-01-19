@@ -30,17 +30,24 @@ public class LoginRegisterController {
                 appFrame.getContentPane().removeAll();
                 mainController.setLoggedUser(user);
                 mainController.run(appFrame);
+            } else {
+                loginRegisterView.showIncorrectPasswordError();
             }
+        } else {
+            loginRegisterView.showIncorrectUsernameError();
         }
     }
 
     public void performRegistration(String username, String password) {
         String encodedPassword = PasswordEncoder.encode(password);
-        User user = databaseProxy.getUserByUsername(username);
-        if(user == null) {
-            User userToSave = new User(username, encodedPassword);
-            databaseProxy.saveUser(userToSave);
+        User userToSave = new User(username, encodedPassword);
+        Integer result = databaseProxy.saveUser(userToSave);
+        if(result > 0) {
             loginRegisterView.switchForm();
+        } else if(result == -1) {
+            loginRegisterView.showUsernameTooShortError();
+        } else if(result == -2) {
+            loginRegisterView.showUserAlreadyExistsError();
         }
     }
 }

@@ -7,9 +7,9 @@ import pl.ztplingo.model.Word;
 import java.util.List;
 
 public interface Database {
-    void saveUser(User user);
-    void saveWord(Word word);
-    void saveSentence(Sentence sentence);
+    Integer saveUser(User user);
+    Integer saveWord(Word word);
+    Integer saveSentence(Sentence sentence);
     User getUserById(Integer id);
     User getUserByUsername(String username);
     Word getWordById(Integer id);
