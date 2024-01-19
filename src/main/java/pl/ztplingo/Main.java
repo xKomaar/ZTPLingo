@@ -2,14 +2,11 @@ package pl.ztplingo;
 
 
 import pl.ztplingo.controller.StartController;
-import pl.ztplingo.database.DatabaseConnection;
 
 import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        DatabaseConnection.getInstance();
-
         StartController startController = new StartController();
         JFrame appFrame = new JFrame();
         appFrame.setTitle("ZTPLingo");

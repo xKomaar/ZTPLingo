@@ -15,7 +15,7 @@ import pl.ztplingo.model.Word;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseConnection implements Database {
+class DatabaseConnection implements Database {
 
     private static DatabaseConnection instance;
 
