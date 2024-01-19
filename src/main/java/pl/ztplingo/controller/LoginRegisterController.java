@@ -9,13 +9,14 @@ import javax.swing.*;
 
 public class LoginRegisterController {
     private LoginRegisterView loginRegisterView;
-    private final MenuController menuController = new MenuController();
+    private MenuController menuController;
     private DatabaseProxy databaseProxy;
     private JFrame appFrame;
 
     public void run(JFrame appFrame, boolean isLoginForm) {
         this.appFrame = appFrame;
         loginRegisterView = new LoginRegisterView(this, isLoginForm);
+        this.menuController = new MenuController();
         databaseProxy = new DatabaseProxy();
         appFrame.getContentPane().add(loginRegisterView);
         appFrame.getContentPane().revalidate();
