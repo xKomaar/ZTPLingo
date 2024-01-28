@@ -48,7 +48,7 @@ public class DatabaseProxy implements Database {
         if(!sentence.getEnglish().contains(" ")) {
             return -2;
         }
-        Pattern pattern = Pattern.compile("[[A-Za-złąćęóżźńś]+]+\\s+,*\\.*\\?*;*!*", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("[A-Za-złąćęóżźńś]+\\s+,*\\.*\\?*;*!*", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(sentence.getPolish());
         if(matcher.matches()) {
             return -1;
