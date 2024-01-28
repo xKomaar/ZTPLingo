@@ -29,7 +29,7 @@ public class DatabaseProxy implements Database {
     }
 
     public Integer saveWord(Word word) {
-        Pattern pattern = Pattern.compile("[A-Za-z]+", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("[A-Za-złąćęóżźńś]+", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(word.getPolish());
         if(!matcher.matches()) {
             return -1;
@@ -48,7 +48,7 @@ public class DatabaseProxy implements Database {
         if(!sentence.getEnglish().contains(" ")) {
             return -2;
         }
-        Pattern pattern = Pattern.compile("[A-Za-z]+\\s+,*\\.*\\?*;*!*", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("[[A-Za-złąćęóżźńś]+]+\\s+,*\\.*\\?*;*!*", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(sentence.getPolish());
         if(matcher.matches()) {
             return -1;
